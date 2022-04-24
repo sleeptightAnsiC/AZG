@@ -1,8 +1,9 @@
 name: New AZG Issue
 description: Stwórz nowy report błędu
-title:
-labels:
+title: " "
+labels: []
 assignees:
+  - sleeptightAnsiC
 body:
   - type: markdown
     attributes:
