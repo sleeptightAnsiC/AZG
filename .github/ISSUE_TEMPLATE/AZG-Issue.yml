@@ -136,3 +136,8 @@ body:
       description: Czy potrzebujesz dodatkowej pomocy w ocenie treści lub poprawności powyższego ticketu? Jeśli tak, zajmie się nim inny członek zespołu.
       options:
         - label: YES, please!
+  - type: textarea
+    id: attachments
+    attributes:
+      label: Attachments
+      description: Poniżej umieść wszystkie attachmenty związane ze zgłaszanym błędem lub linki do nich.
