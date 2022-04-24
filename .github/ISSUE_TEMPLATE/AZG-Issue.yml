@@ -121,6 +121,14 @@ body:
       placeholder: Podaj kroki w punktach
     validations:
       required: true
+  - type: textarea
+    id: reproAttempts
+    attributes:
+      label: Reproduction Attempts
+      description: Poniżej umieść wszystkie próby wywołania błędu (Repro Lines)
+      placeholder: - successful_attempts/all_attempts - Platform - Build_CL - additional_info
+    validations:
+      required: true
   - type: checkboxes
     id: review
     attributes:
