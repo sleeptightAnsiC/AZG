@@ -1,6 +1,6 @@
 name: New AZG Issue
 description: Stwórz nowy report błędu
-title: " "
+title: "[Platforms] - CRASH - BLOCKER STATUS - Chapter/Level/System - Area/Chunk/Feature - Preset/Item/Panel - Summary"
 labels: []
 assignees:
   - sleeptightAnsiC
@@ -43,7 +43,7 @@ body:
       label: BLOCKER Status
       options:
         - N/A
-        - None
+        - NO
         - Blocker
         - Conditional Blocker
         - Review Blocker
