@@ -1,4 +1,7 @@
 # AZG project
-- Tworzony przy użyciu Unreal Engine i Blender
-- Projekt ten ma na celu odtworzenie kluczowych mechanik i systemów z serii Dying Light w formie prostego prototypu
-- GitHub jest używany jako repozytorium, bug tracker i dokumentacja projektu
+- Unreal Engine 5
+- Blender
+- GitHub
+- - Repository
+- - Issue Tracker
+- - Wiki (documentation)
