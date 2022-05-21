@@ -1,0 +1,26 @@
+{
+	"FileVersion": 3,
+	"Version": 2,
+	"VersionName": "2.1.0",
+	"FriendlyName": "ProjectVersionFromGit",
+	"Description": "Set version for project from git tag format MAJOR.MINOR.PATCH also set branch name, commit hash and datetime build",
+	"Category": "Source Control",
+	"CreatedBy": "Andrew Bindraw",
+	"CreatedByURL": "https://github.com/mrbindraw",
+	"DocsURL": "https://github.com/mrbindraw/ProjectVersionFromGit/blob/master/README.md",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/59246af04cae4760be3934baebaef588",
+	"SupportURL": "mailto:mrbindraw@gmail.com",
+	"EngineVersion": "5.0.0",
+	"CanContainContent": false,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "ProjectVersionFromGit",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Win64"
+			]
+		}
+	]
+}
