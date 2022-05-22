@@ -1,0 +1,17 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Timelines For Components",
+	"Description": "Allows you to use timelines in any of your components.",
+	"Category": "Utility",
+	"CreatedBy": "Venalith",
+	"CreatedByURL": "https://www.venalith.com/",
+	"DocsURL": "",
+	"MarketplaceURL": "https://www.unrealengine.com/marketplace/en-US/profile/Venalith",
+	"SupportURL": "mailto:venalithstudio@gmail.com",
+	"EngineVersion": "5.0.0",
+	"CanContainContent": true,
+	"Installed": true,
+	"WhitelistPlatforms": [ "Win64", "Mac", "IOS", "Android" ]
+}
