@@ -14,7 +14,17 @@ class IMGUI_API UImGuiBPFL : public UBlueprintFunctionLibrary
 
 public:
 
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta=(DevelopmentOnly))
+	static void PrintSimpleWindow(FString Name, FString Text);
+
 	UFUNCTION(BlueprintCallable, Category = "DearImGui")
-	static void Print(FString Name, FString Text);
+	static void PrintWatermark(FString Name, FString Text, bool bPrintTextOnly, bool bNoBackground, bool bDevelopmentOnly);
+
+
+private:
+
+	UFUNCTION(meta = (DevelopmentOnly))
+	static void PrintWatermarkDevelopmentOnly(FString Name, FString Text, bool bPrintTextOnly, bool bNoBackground);
 	
+	static void PrintWatermarkFixed(FString Name, FString Text, bool bPrintTextOnly, bool bNoBackground);
 };
