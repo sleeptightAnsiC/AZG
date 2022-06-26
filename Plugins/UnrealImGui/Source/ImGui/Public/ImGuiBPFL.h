@@ -49,10 +49,20 @@ public:
 	static void PrintSimpleWindow(FString Name, FString Text, FVector2D RelativeScreenPosition);
 
 	UFUNCTION(BlueprintCallable, Category = "DearImGui")
-	static void PrintWatermark(FString Name, FString Text, FVector2D RelativeScreenPosition, bool bPrintTextOnly, float BackgroundAlpha, bool bDevelopmentOnly);
+	static void PrintSimpleWatermark(FString Name, FString Text, FVector2D RelativeScreenPosition, bool bPrintTextOnly, float BackgroundAlpha);
 
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void StartPrintingWindow(FString Name, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties);
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void StopPrintingWindow();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void AddTextToWindow(FString Text);
 
 private:
+
+	static bool TryWindowFunction(bool bShallBePrinting, FString FunctionName, FString AdditionalErrorMessage);
 
 	static void SetNextWindowPosRelative(FVector2D RelativeScreenPosition, ImGuiCond Condition);
 
