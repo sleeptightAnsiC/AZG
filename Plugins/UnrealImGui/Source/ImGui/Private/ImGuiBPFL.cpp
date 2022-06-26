@@ -70,7 +70,7 @@ void UImGuiBPFL::SetNextWindowPosRelative(FVector2D RelativeScreenPosition, ImGu
 		= FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
 	if (ViewportSize.X > 0 && ViewportSize.Y > 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ViewportSize: X %f    Y %f"), ViewportSize.X, ViewportSize.Y);
+		//UE_LOG(LogTemp, Warning, TEXT("ViewportSize: X %f    Y %f"), ViewportSize.X, ViewportSize.Y);	  
 		ImVec2 window_pos, window_pos_pivot;
 		window_pos.x = RelativeScreenPosition.X * ViewportSize.X;
 		window_pos.y = RelativeScreenPosition.Y * ViewportSize.Y;
