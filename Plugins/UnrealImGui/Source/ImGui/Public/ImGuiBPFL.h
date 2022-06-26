@@ -54,11 +54,6 @@ public:
 
 private:
 
-	UFUNCTION(meta = (DevelopmentOnly))
-	static void PrintWatermarkDevelopmentOnly(FString Name, FString Text, FVector2D RelativeScreenPosition, bool bPrintTextOnly, float BackgroundAlpha);
-	
-	static void PrintWatermarkFixed(FString Name, FString Text, FVector2D RelativeScreenPosition, bool bPrintTextOnly, float BackgroundAlpha);
-
 	static void SetNextWindowPosRelative(FVector2D RelativeScreenPosition, ImGuiCond Condition);
 
 	static void TextMousePosition();
