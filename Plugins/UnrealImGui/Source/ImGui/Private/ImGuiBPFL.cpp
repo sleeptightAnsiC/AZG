@@ -8,6 +8,7 @@
 static bool bPrinting = false;
 
 const FString NullMessage = "No message provided :(";
+const FString NullData = "No Data";
 
 //Public
 
@@ -62,7 +63,7 @@ void UImGuiBPFL::PrintSimpleWatermark(FString Name, FString Text, FVector2D Rela
 
 void UImGuiBPFL::StartPrintingWindow(FString Name, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties)
 {
-	if (TryWindowFunction(false, "StartPrintingWindow", "You cannot start Printing another Window before closing the already existing one. Probably 'StopPrintingWindow()' is missing somewhere."))
+	if (TryWindowFunction(false, "StartPrintingWindow", Name, "You cannot start Printing another Window before closing the already existing one. Probably 'StopPrintingWindow()' is missing somewhere."))
 	{
 		bPrinting = true;
 
@@ -73,7 +74,7 @@ void UImGuiBPFL::StartPrintingWindow(FString Name, TSet<TEnumAsByte<ImGui_Window
 		}
 
 		std::string ConvertBuffer = TCHAR_TO_UTF8(*Name);
-		ImGui::Begin(&*ConvertBuffer.begin());
+		ImGui::Begin(&*ConvertBuffer.begin(), nullptr, Flags);
 
 		/*
 		if (ImGui::Button("200x200")) { ImGui::SetWindowSize(ImVec2(200, 200)); } ImGui::SameLine();
@@ -85,7 +86,7 @@ void UImGuiBPFL::StartPrintingWindow(FString Name, TSet<TEnumAsByte<ImGui_Window
 
 void UImGuiBPFL::StopPrintingWindow()
 {
-	if (TryWindowFunction(true, "StopPrintingWindow", NullMessage))
+	if (TryWindowFunction(true, "StopPrintingWindow", NullData, NullMessage))
 	{
 		ImGui::End();
 		bPrinting = false;
@@ -94,28 +95,61 @@ void UImGuiBPFL::StopPrintingWindow()
 
 void UImGuiBPFL::AddTextToWindow(FString Text)
 {
-	if (TryWindowFunction(true, "AddTextToWindow", NullMessage))
+	if (TryWindowFunction(true, "AddTextToWindow", Text, NullMessage))
 	{
-		static std::string ConvertBuffer = TCHAR_TO_UTF8(*Text);
+		std::string ConvertBuffer = TCHAR_TO_UTF8(*Text);
 		ImGui::Text(&*ConvertBuffer.begin());
 	}
 }
 
+void UImGuiBPFL::StayInSameWindowLine()
+{
+	if (TryWindowFunction(true, "StayInSameWindowLine", NullData, NullMessage))
+	{
+		ImGui::SameLine();
+	}
+}
 
+void UImGuiBPFL::AddButtonToWindow(FString Name, bool& bClicked)
+{
+	bClicked = false;
+	if (TryWindowFunction(true, "AddButtonToWindow", Name, NullMessage))
+	{
+		std::string ConvertBuffer = TCHAR_TO_UTF8(*Name);
+		bClicked = ImGui::Button(&*ConvertBuffer.begin());
+	}
+}
+
+void UImGuiBPFL::AddSeparatorToWindow()
+{
+	if (TryWindowFunction(true, "AddSeparatorToWindow", NullData, NullMessage))
+	{
+		ImGui::Separator();
+	}
+}
 
 
 //Private
 
 
-bool UImGuiBPFL::TryWindowFunction(bool bShallBePrinting, FString FunctionName, FString AdditionalErrorMessage)
+bool UImGuiBPFL::TryWindowFunction(bool bShallPrintingFlagBeSet, FString FunctionName, FString PassedData, FString AdditionalErrorMessage)
 {
-	if (bShallBePrinting == bPrinting)
+	if (bShallPrintingFlagBeSet == bPrinting)
 		return true;
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("'ImGuiBPFL::%s' function has not executed due to bPrinting flag being set to %s / Additional info: %s"), *FunctionName, bPrinting ? TEXT("TRUE") : TEXT("FALSE"), *AdditionalErrorMessage)
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("'ImGuiBPFL::%s' function has not executed due to bPrinting flag being set to %s / Additional info: %s"), *FunctionName, bPrinting ? TEXT("TRUE") : TEXT("FALSE"), *AdditionalErrorMessage));
+		FString Message = FString::Printf
+		(
+			TEXT("'ImGuiBPFL::%s' function is not executing due to bPrinting flag being set to %s / %s / Additional info: %s"), *FunctionName, bPrinting ? TEXT("TRUE") : TEXT("FALSE"), *PassedData, * AdditionalErrorMessage
+		);
+		UE_LOG(LogTemp, Error, TEXT("%s"), *Message)
+		GEngine->AddOnScreenDebugMessage((int32)(GetTypeHash(Message)), 0, FColor::Red, Message);
 		return false;
+		/*
+		UE_LOG(LogTemp, Error, TEXT("'ImGuiBPFL::%s' function has not executed due to bPrinting flag being set to %s / Additional info: %s"), *FunctionName, bPrinting ? TEXT("TRUE") : TEXT("FALSE"), *AdditionalErrorMessage)
+		GEngine->AddOnScreenDebugMessage(-1, 0, FColor::Red, FString::Printf(TEXT("'ImGuiBPFL::%s' function has not executed due to bPrinting flag being set to %s / Additional info: %s"), *FunctionName, bPrinting ? TEXT("TRUE") : TEXT("FALSE"), *AdditionalErrorMessage));
+		return false;
+		*/
 	}
 }
 

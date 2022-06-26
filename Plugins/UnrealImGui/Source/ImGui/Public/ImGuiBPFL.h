@@ -45,11 +45,16 @@ class IMGUI_API UImGuiBPFL : public UBlueprintFunctionLibrary
 
 public:
 
+	//placeholder-test
 	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta=(DevelopmentOnly))
 	static void PrintSimpleWindow(FString Name, FString Text, FVector2D RelativeScreenPosition);
 
+	//placeholder-test
 	UFUNCTION(BlueprintCallable, Category = "DearImGui")
 	static void PrintSimpleWatermark(FString Name, FString Text, FVector2D RelativeScreenPosition, bool bPrintTextOnly, float BackgroundAlpha);
+
+
+	// Front-End for blueprints
 
 	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
 	static void StartPrintingWindow(FString Name, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties);
@@ -60,9 +65,18 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
 	static void AddTextToWindow(FString Text);
 
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void StayInSameWindowLine();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void AddButtonToWindow(FString Name, bool& bClicked);
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void AddSeparatorToWindow();
+
 private:
 
-	static bool TryWindowFunction(bool bShallBePrinting, FString FunctionName, FString AdditionalErrorMessage);
+	static bool TryWindowFunction(bool bShallPrintingFlagBeSet, FString FunctionName, FString PassedData, FString AdditionalErrorMessage);
 
 	static void SetNextWindowPosRelative(FVector2D RelativeScreenPosition, ImGuiCond Condition);
 
