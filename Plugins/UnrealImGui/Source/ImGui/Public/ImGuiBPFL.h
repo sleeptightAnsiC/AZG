@@ -38,6 +38,16 @@ enum ImGui_WindowFlags
 	None                         UMETA(DisplayName = "Null")
 };
 
+UENUM(BlueprintType)//, Category = "DearImGui")
+enum ImGui_WindowConditions
+{
+	Nothing =		ImGuiCond_None			UMETA(DisplayName = "Null"),
+	Once =			ImGuiCond_Once			UMETA(DisplayName = "Once"),
+	Always =		ImGuiCond_Always		UMETA(DisplayName = "Always"),
+	FirstUseEver =	ImGuiCond_FirstUseEver	UMETA(DisplayName = "FirstUseEver"),
+	Appearing =		ImGuiCond_Appearing		UMETA(DisplayName = "Appearing")
+};
+
 UCLASS()
 class IMGUI_API UImGuiBPFL : public UBlueprintFunctionLibrary
 {
@@ -74,11 +84,18 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
 	static void AddSeparatorToWindow();
 
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void AddSpacingToWindow();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void SetNextWindowRelativePosition(FVector2D RelativeScreenPosition, ImGui_WindowConditions Condition);
+
 private:
 
 	static bool TryWindowFunction(bool bShallPrintingFlagBeSet, FString FunctionName, FString PassedData, FString AdditionalErrorMessage);
 
-	static void SetNextWindowPosRelative(FVector2D RelativeScreenPosition, ImGuiCond Condition);
+	//legacy, do wywalenia
+	static void SetNextWindowPosRelative(FVector2D RelativeScreenPosition, ImGuiCond Condition); 
 
 	static void TextMousePosition();
 

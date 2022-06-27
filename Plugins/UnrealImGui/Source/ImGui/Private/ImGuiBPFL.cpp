@@ -128,6 +128,36 @@ void UImGuiBPFL::AddSeparatorToWindow()
 	}
 }
 
+void UImGuiBPFL::AddSpacingToWindow()
+{
+	if (TryWindowFunction(true, "AddSpacingToWindow", NullData, NullMessage))
+	{
+		ImGui::Spacing();
+	}
+}
+
+void UImGuiBPFL::SetNextWindowRelativePosition(FVector2D RelativeScreenPosition, ImGui_WindowConditions Condition)
+{
+	if (TryWindowFunction(false, "SetNextWindowRelativePosition", FString::Printf(TEXT("%s"), *RelativeScreenPosition.ToString()), NullMessage))
+	{
+		FVector2D ViewportSize
+			= FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
+		if (ViewportSize.X > 0 && ViewportSize.Y > 0)
+		{
+			RelativeScreenPosition.X = FMath::Clamp(RelativeScreenPosition.X, 0, 1);
+			RelativeScreenPosition.Y = FMath::Clamp(RelativeScreenPosition.Y, 0, 1);
+
+			ImVec2 window_pos, window_pos_pivot;
+			window_pos.x = RelativeScreenPosition.X * ViewportSize.X;
+			window_pos.y = RelativeScreenPosition.Y * ViewportSize.Y;
+			window_pos_pivot.x = RelativeScreenPosition.X;
+			window_pos_pivot.y = RelativeScreenPosition.Y;
+
+			ImGui::SetNextWindowPos(window_pos, Condition, window_pos_pivot);
+		}
+	}
+}
+
 
 //Private
 
