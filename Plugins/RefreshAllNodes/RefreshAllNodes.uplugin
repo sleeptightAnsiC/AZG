@@ -1,0 +1,28 @@
+{
+	"FileVersion": 3,
+	"Version": 4,
+	"VersionName": "1.4",
+	"FriendlyName": "RefreshAllNodes",
+	"Description": "Editor plugin that adds ways to refresh and compile blueprints as a batch operation",
+	"Category": "Blueprints",
+	"CreatedBy": "Nachomonkey",
+	"CreatedByURL": "https://github.com/nachomonkey",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": false,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "RefreshAllNodes",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit",
+			"AdditionalDependencies": [
+				"Engine",
+				"CoreUObject"
+			]
+		}
+	]
+}

@@ -28,6 +28,10 @@
 			"Name": "TimelinesForComponents",
 			"Enabled": true,
 			"MarketplaceURL": "https://www.unrealengine.com/marketplace/en-US/profile/Venalith"
+		},
+		{
+			"Name": "RefreshAllNodes",
+			"Enabled": true
 		}
 	]
 }
