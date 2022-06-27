@@ -7,7 +7,7 @@
 
 static bool bPrinting = false;
 
-const FString NullMessage = "No message provided :(";
+const FString NullMessage = ":(";
 const FString NullData = "No Data";
 
 //Public
@@ -15,7 +15,7 @@ const FString NullData = "No Data";
 void UImGuiBPFL::PrintSimpleWindow(FString Name, FString Text, FVector2D RelativeScreenPosition)
 {
 	std::string ConvertBuffer = TCHAR_TO_UTF8(*Name);
-	UImGuiBPFL::SetNextWindowPosRelative(RelativeScreenPosition, ImGuiCond_Once);
+	UImGuiBPFL::SetNextWindowRelativePosition(RelativeScreenPosition, Once);
 	ImGui::Begin(&*ConvertBuffer.begin(), nullptr,
 		//ImGuiWindowFlags_AlwaysAutoResize +
 		//ImGuiWindowFlags_NoBackground +
@@ -46,7 +46,7 @@ void UImGuiBPFL::PrintSimpleWatermark(FString Name, FString Text, FVector2D Rela
 		if (bPrintTextOnly)
 			flags += ImGuiWindowFlags_NoTitleBar;
 
-		UImGuiBPFL::SetNextWindowPosRelative(RelativeScreenPosition, ImGuiCond_Always);
+		UImGuiBPFL::SetNextWindowRelativePosition(RelativeScreenPosition, Always);
 		ImGui::SetNextWindowBgAlpha(BackgroundAlpha);
 
 		std::string ConvertBuffer
@@ -63,7 +63,7 @@ void UImGuiBPFL::PrintSimpleWatermark(FString Name, FString Text, FVector2D Rela
 
 void UImGuiBPFL::StartPrintingWindow(FString Name, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties)
 {
-	if (TryWindowFunction(false, "StartPrintingWindow", Name, "You cannot start Printing another Window before closing the already existing one. Probably 'StopPrintingWindow()' is missing somewhere."))
+	if (ValidateWindowFunction(false, "StartPrintingWindow", Name, "You cannot start Printing another Window before closing the already existing one. Probably 'StopPrintingWindow()' is missing somewhere."))
 	{
 		bPrinting = true;
 
@@ -86,7 +86,7 @@ void UImGuiBPFL::StartPrintingWindow(FString Name, TSet<TEnumAsByte<ImGui_Window
 
 void UImGuiBPFL::StopPrintingWindow()
 {
-	if (TryWindowFunction(true, "StopPrintingWindow", NullData, NullMessage))
+	if (ValidateWindowFunction(true, "StopPrintingWindow", NullData, NullMessage))
 	{
 		ImGui::End();
 		bPrinting = false;
@@ -95,7 +95,7 @@ void UImGuiBPFL::StopPrintingWindow()
 
 void UImGuiBPFL::AddTextToWindow(FString Text)
 {
-	if (TryWindowFunction(true, "AddTextToWindow", Text, NullMessage))
+	if (ValidateWindowFunction(true, "AddTextToWindow", Text, NullMessage))
 	{
 		std::string ConvertBuffer = TCHAR_TO_UTF8(*Text);
 		ImGui::Text(&*ConvertBuffer.begin());
@@ -104,7 +104,7 @@ void UImGuiBPFL::AddTextToWindow(FString Text)
 
 void UImGuiBPFL::StayInSameWindowLine()
 {
-	if (TryWindowFunction(true, "StayInSameWindowLine", NullData, NullMessage))
+	if (ValidateWindowFunction(true, "StayInSameWindowLine", NullData, NullMessage))
 	{
 		ImGui::SameLine();
 	}
@@ -113,7 +113,7 @@ void UImGuiBPFL::StayInSameWindowLine()
 void UImGuiBPFL::AddButtonToWindow(FString Name, bool& bClicked)
 {
 	bClicked = false;
-	if (TryWindowFunction(true, "AddButtonToWindow", Name, NullMessage))
+	if (ValidateWindowFunction(true, "AddButtonToWindow", Name, NullMessage))
 	{
 		std::string ConvertBuffer = TCHAR_TO_UTF8(*Name);
 		bClicked = ImGui::Button(&*ConvertBuffer.begin());
@@ -122,7 +122,7 @@ void UImGuiBPFL::AddButtonToWindow(FString Name, bool& bClicked)
 
 void UImGuiBPFL::AddSeparatorToWindow()
 {
-	if (TryWindowFunction(true, "AddSeparatorToWindow", NullData, NullMessage))
+	if (ValidateWindowFunction(true, "AddSeparatorToWindow", NullData, NullMessage))
 	{
 		ImGui::Separator();
 	}
@@ -130,7 +130,7 @@ void UImGuiBPFL::AddSeparatorToWindow()
 
 void UImGuiBPFL::AddSpacingToWindow()
 {
-	if (TryWindowFunction(true, "AddSpacingToWindow", NullData, NullMessage))
+	if (ValidateWindowFunction(true, "AddSpacingToWindow", NullData, NullMessage))
 	{
 		ImGui::Spacing();
 	}
@@ -138,7 +138,7 @@ void UImGuiBPFL::AddSpacingToWindow()
 
 void UImGuiBPFL::SetNextWindowRelativePosition(FVector2D RelativeScreenPosition, ImGui_WindowConditions Condition)
 {
-	if (TryWindowFunction(false, "SetNextWindowRelativePosition", FString::Printf(TEXT("%s"), *RelativeScreenPosition.ToString()), NullMessage))
+	if (ValidateWindowFunction(false, "SetNextWindowRelativePosition", FString::Printf(TEXT("%s"), *RelativeScreenPosition.ToString()), NullMessage))
 	{
 		FVector2D ViewportSize
 			= FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
@@ -158,11 +158,37 @@ void UImGuiBPFL::SetNextWindowRelativePosition(FVector2D RelativeScreenPosition,
 	}
 }
 
+void UImGuiBPFL::SetNextWindowBackgroundAlpha(float BackgroundAlpha)
+{
+	if (ValidateWindowFunction(false, "SetNextWindowBackgroundAlpha", FString::Printf(TEXT("%f"), BackgroundAlpha), NullMessage))
+	{
+		ImGui::SetNextWindowBgAlpha(BackgroundAlpha);
+	}
+}
+
+void UImGuiBPFL::SetNextWindowCollapseState(bool bCollapsed) //Do-poprawy/przemyœlenia - brak Condition
+{
+	if (ValidateWindowFunction(false, "SetNextWindowCollapseState", FString::Printf(TEXT("%s"), bCollapsed ? TEXT("TRUE") : TEXT("FALSE")), NullMessage))
+	{
+			ImGui::SetNextWindowCollapsed(bCollapsed, ImGuiCond_Always);
+	}
+}
+
+void UImGuiBPFL::SetNextWindowFocused()
+{
+	if (ValidateWindowFunction(false, "SetNextWindowFocused", NullData, NullMessage))
+	{
+		ImGui::SetNextWindowFocus();
+	}
+}
+
+
+
 
 //Private
 
 
-bool UImGuiBPFL::TryWindowFunction(bool bShallPrintingFlagBeSet, FString FunctionName, FString PassedData, FString AdditionalErrorMessage)
+bool UImGuiBPFL::ValidateWindowFunction(bool bShallPrintingFlagBeSet, FString FunctionName, FString PassedData, FString AdditionalErrorMessage)
 {
 	if (bShallPrintingFlagBeSet == bPrinting)
 		return true;
@@ -172,32 +198,12 @@ bool UImGuiBPFL::TryWindowFunction(bool bShallPrintingFlagBeSet, FString Functio
 		(
 			TEXT("'ImGuiBPFL::%s' function is not executing due to bPrinting flag being set to %s / %s / Additional info: %s"), *FunctionName, bPrinting ? TEXT("TRUE") : TEXT("FALSE"), *PassedData, * AdditionalErrorMessage
 		);
-		UE_LOG(LogTemp, Error, TEXT("%s"), *Message)
+		//UE_LOG(LogTemp, Error, TEXT("%s"), *Message)	//logowanie na Tick'u to s³aby pomys³
 		GEngine->AddOnScreenDebugMessage((int32)(GetTypeHash(Message)), 0, FColor::Red, Message);
 		return false;
-		/*
-		UE_LOG(LogTemp, Error, TEXT("'ImGuiBPFL::%s' function has not executed due to bPrinting flag being set to %s / Additional info: %s"), *FunctionName, bPrinting ? TEXT("TRUE") : TEXT("FALSE"), *AdditionalErrorMessage)
-		GEngine->AddOnScreenDebugMessage(-1, 0, FColor::Red, FString::Printf(TEXT("'ImGuiBPFL::%s' function has not executed due to bPrinting flag being set to %s / Additional info: %s"), *FunctionName, bPrinting ? TEXT("TRUE") : TEXT("FALSE"), *AdditionalErrorMessage));
-		return false;
-		*/
 	}
 }
 
-void UImGuiBPFL::SetNextWindowPosRelative(FVector2D RelativeScreenPosition, ImGuiCond Condition)
-{
-	FVector2D ViewportSize
-		= FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
-	if (ViewportSize.X > 0 && ViewportSize.Y > 0)
-	{  
-		ImVec2 window_pos, window_pos_pivot;
-		window_pos.x = RelativeScreenPosition.X * ViewportSize.X;
-		window_pos.y = RelativeScreenPosition.Y * ViewportSize.Y;
-		window_pos_pivot.x = RelativeScreenPosition.X;
-		window_pos_pivot.y = RelativeScreenPosition.Y;
-
-		ImGui::SetNextWindowPos(window_pos, Condition, window_pos_pivot);
-	}
-}
 
 void UImGuiBPFL::TextMousePosition()
 {

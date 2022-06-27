@@ -90,12 +90,21 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
 	static void SetNextWindowRelativePosition(FVector2D RelativeScreenPosition, ImGui_WindowConditions Condition);
 
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void SetNextWindowBackgroundAlpha(float BackgroundAlpha);
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void SetNextWindowCollapseState(bool bCollapsed);  //Do-poprawy/przemyœlenia - brak Condition
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void SetNextWindowFocused();
+
+
+
+
 private:
 
-	static bool TryWindowFunction(bool bShallPrintingFlagBeSet, FString FunctionName, FString PassedData, FString AdditionalErrorMessage);
-
-	//legacy, do wywalenia
-	static void SetNextWindowPosRelative(FVector2D RelativeScreenPosition, ImGuiCond Condition); 
+	static bool ValidateWindowFunction(bool bShallPrintingFlagBeSet, FString FunctionName, FString PassedData, FString AdditionalErrorMessage);
 
 	static void TextMousePosition();
 
