@@ -63,8 +63,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
 	static void PrintSimpleWatermark(FString Name, FString Text, FVector2D RelativeScreenPosition, bool bPrintTextOnly, float BackgroundAlpha);
 
-	//UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
-	//static void TestFunction();
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void TestFunction();
 
 
 	// Front-End for blueprints

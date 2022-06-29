@@ -63,7 +63,6 @@ void UImGuiBPFL::PrintSimpleWatermark(FString Name, FString Text, FVector2D Rela
 		ImGui::End();
 }
 
-/*
 void UImGuiBPFL::TestFunction()
 {
 	ImGui::Begin("Test Window");
@@ -79,7 +78,7 @@ void UImGuiBPFL::TestFunction()
 
 	ImGui::End();
 }
-*/
+
 
 // Front-End for blueprints
 
