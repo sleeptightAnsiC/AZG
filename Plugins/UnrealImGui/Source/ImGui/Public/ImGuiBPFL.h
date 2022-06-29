@@ -129,6 +129,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
 	static void AddProgressBarToWindow(FVector2D SizeInPixels, float Progress, FString Overlay = " ");
 
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void StartPrintingCombo(FString Label, FString Preview, bool& bOpen);
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void StopPrintingCombo();
+
 private:
 
 	static bool ValidateWindowFunction(bool bShallPrintingFlagBeSet, FString FunctionName, FString PassedData, FString AdditionalErrorMessage);

@@ -71,21 +71,18 @@ void UImGuiBPFL::TestFunction()
 	ImGui::Text("Siema1");
 	ImGui::Text("Siema2");
 	ImGui::Text("Siema3");
-	ImGui::BeginChild("test child", ImVec2(200, 156), true);
 
-
-	static int radioData = 1;
-	ImGui::RadioButton("Test Radio Button 0", &radioData, 0);
-	ImGui::RadioButton("Test Radio Button 1", &radioData, 1);
-	ImGui::RadioButton("Test Radio Button 2", &radioData, 2);
-	ImGui::RadioButton("Test Radio Button 3", &radioData, 3);
-	ImGui::RadioButton("Test Radio Button 4", &radioData, 4);
-	
-
-
-	ImGui::EndChild();
-
-	ImGui::ProgressBar(((float)(radioData) / 4));
+	static bool bFlag = true;
+	if (ImGui::BeginMenu("Test Menu", true))
+	{
+		static int radioData = 1;
+		ImGui::RadioButton("Test Radio Button 0", &radioData, 0);
+		ImGui::RadioButton("Test Radio Button 1", &radioData, 1);
+		ImGui::RadioButton("Test Radio Button 2", &radioData, 2);
+		ImGui::RadioButton("Test Radio Button 3", &radioData, 3);
+		ImGui::RadioButton("Test Radio Button 4", &radioData, 4);
+		ImGui::EndMenu();
+	}
 
 	ImGui::End();
 }
@@ -128,9 +125,7 @@ void UImGuiBPFL::AddTextToWindow(FString Text)
 void UImGuiBPFL::StayInSameWindowLine()
 {
 	if (ValidateWindowFunction(true, "StayInSameWindowLine", NullData, NullMessage))
-	{
 		ImGui::SameLine();
-	}
 }
 
 void UImGuiBPFL::AddButtonToWindow(FString Name, bool& bClicked)
@@ -146,17 +141,13 @@ void UImGuiBPFL::AddButtonToWindow(FString Name, bool& bClicked)
 void UImGuiBPFL::AddSeparatorToWindow()
 {
 	if (ValidateWindowFunction(true, "AddSeparatorToWindow", NullData, NullMessage))
-	{
 		ImGui::Separator();
-	}
 }
 
 void UImGuiBPFL::AddSpacingToWindow()
 {
 	if (ValidateWindowFunction(true, "AddSpacingToWindow", NullData, NullMessage))
-	{
 		ImGui::Spacing();
-	}
 }
 
 void UImGuiBPFL::SetNextWindowRelativePosition(FVector2D RelativeScreenPosition, ImGui_WindowConditions Condition)
@@ -184,25 +175,19 @@ void UImGuiBPFL::SetNextWindowRelativePosition(FVector2D RelativeScreenPosition,
 void UImGuiBPFL::SetNextWindowBackgroundAlpha(float BackgroundAlpha)
 {
 	if (ValidateWindowFunction(false, "SetNextWindowBackgroundAlpha", FString::Printf(TEXT("%f"), BackgroundAlpha), NullMessage))
-	{
 		ImGui::SetNextWindowBgAlpha(BackgroundAlpha);
-	}
 }
 
 void UImGuiBPFL::SetNextWindowCollapseState(bool bCollapsed) //Do-poprawy/przemyœlenia - brak Condition
 {
 	if (ValidateWindowFunction(false, "SetNextWindowCollapseState", FString::Printf(TEXT("%s"), bCollapsed ? TEXT("TRUE") : TEXT("FALSE")), NullMessage))
-	{
 			ImGui::SetNextWindowCollapsed(bCollapsed, ImGuiCond_Always);
-	}
 }
 
 void UImGuiBPFL::SetNextWindowFocused()
 {
 	if (ValidateWindowFunction(false, "SetNextWindowFocused", NullData, NullMessage))
-	{
 		ImGui::SetNextWindowFocus();
-	}
 }
 
 void UImGuiBPFL::AddCollapsingHeaderToWindow(FString Name, bool& bOpen)
@@ -229,25 +214,19 @@ void UImGuiBPFL::StartPrintingChild(FString Name, FVector2D SizeInPixels, bool b
 void UImGuiBPFL::StopPrintingChild()
 {
 	if (ValidateWindowFunction(true, "StopPrintingChildWindow", NullData, NullMessage))
-	{
 		ImGui::EndChild();
-	}
 }
 
 void UImGuiBPFL::StartPrintingGroup()
 {
 	if (ValidateWindowFunction(true, "StartPrintingGroup", NullData, NullMessage))
-	{
 		ImGui::BeginGroup();
-	}
 }
 
 void UImGuiBPFL::StopPrintingGroup()
 {
 	if (ValidateWindowFunction(true, "StopPrintingGroup", NullData, NullMessage))
-	{
 		ImGui::EndGroup();
-	}
 }
 
 void UImGuiBPFL::AddCheckboxToWindow(FString Label, bool bOldState, bool& bNewState, bool& bStateChanged)
@@ -282,9 +261,7 @@ void UImGuiBPFL::AddRadioButtonsToWindow(TSet<FString> Labels, int OldState, int
 void UImGuiBPFL::AddBulletToWindow()
 {
 	if (ValidateWindowFunction(true, "AddBulletToWindow", NullData, NullMessage))
-	{
 		ImGui::Bullet();
-	}
 }
 
 void UImGuiBPFL::AddProgressBarToWindow(FVector2D SizeInPixels, float Progress, FString Overlay)
@@ -301,6 +278,23 @@ void UImGuiBPFL::AddProgressBarToWindow(FVector2D SizeInPixels, float Progress, 
 	}
 }
 
+void UImGuiBPFL::StartPrintingCombo(FString Label, FString Preview, bool& bOpen)
+{
+	bOpen = false;
+	if (ValidateWindowFunction(true, "StartPrintingCombo", Label + " / " + Preview, NullMessage))
+	{
+		std::string ConvertBuffer_0 = TCHAR_TO_UTF8(*Label);
+		std::string ConvertBuffer_1 = TCHAR_TO_UTF8(*Preview);
+		if (ImGui::BeginCombo(&*ConvertBuffer_0.begin(), &*ConvertBuffer_1.begin()))
+			bOpen = true;
+	}
+}
+
+void UImGuiBPFL::StopPrintingCombo()
+{
+	if (ValidateWindowFunction(true, "StopPrintingCombo", NullData, NullMessage))
+		ImGui::EndCombo();
+}
 
 //Private
 
