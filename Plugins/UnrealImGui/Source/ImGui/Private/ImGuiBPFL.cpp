@@ -11,8 +11,7 @@ const FString NullMessage = ":(";
 const FString NullData = "No Data";
 
 //Public
-
-//placeholders - test
+// placeholders - test
 
 void UImGuiBPFL::PrintSimpleWindow(FString Name, FString Text, FVector2D RelativeScreenPosition)
 {
@@ -66,20 +65,33 @@ void UImGuiBPFL::PrintSimpleWatermark(FString Name, FString Text, FVector2D Rela
 void UImGuiBPFL::TestFunction()
 {
 	ImGui::Begin("Test Window");
-	ImGui::BeginGroup();
+
+
 	ImGui::Text("Siema0");
 	ImGui::Text("Siema1");
 	ImGui::Text("Siema2");
 	ImGui::Text("Siema3");
-	static bool v;
-	ImGui::Checkbox("Test Checkbox", &v);
+	ImGui::BeginChild("test child", ImVec2(200, 156), true);
 
-	ImGui::EndGroup();
+
+	static int radioData = 1;
+	ImGui::RadioButton("Test Radio Button 0", &radioData, 0);
+	ImGui::RadioButton("Test Radio Button 1", &radioData, 1);
+	ImGui::RadioButton("Test Radio Button 2", &radioData, 2);
+	ImGui::RadioButton("Test Radio Button 3", &radioData, 3);
+	ImGui::RadioButton("Test Radio Button 4", &radioData, 4);
+	
+
+
+	ImGui::EndChild();
+
+	ImGui::ProgressBar(((float)(radioData) / 4));
 
 	ImGui::End();
 }
 
 
+//Public
 // Front-End for blueprints
 
 void UImGuiBPFL::StartPrintingMainWindow(FString Name, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties)
@@ -238,7 +250,6 @@ void UImGuiBPFL::StopPrintingGroup()
 	}
 }
 
-
 void UImGuiBPFL::AddCheckboxToWindow(FString Label, bool bOldState, bool& bNewState, bool& bStateChanged)
 {
 	bStateChanged = false;
@@ -251,8 +262,47 @@ void UImGuiBPFL::AddCheckboxToWindow(FString Label, bool bOldState, bool& bNewSt
 	bNewState = bOldState;
 }
 
-//Private
+void UImGuiBPFL::AddRadioButtonsToWindow(TSet<FString> Labels, int OldState, int& NewState, bool& bStateChanged)
+{
+	bStateChanged = false;
+	if (ValidateWindowFunction(true, "AddRadioButtonsToWindow", NullData, NullMessage))
+	{
+		int labelIterator = 0;
+		for (FString label : Labels)
+		{
+			std::string ConvertBuffer = TCHAR_TO_UTF8(*label);
+			if (ImGui::RadioButton(&*ConvertBuffer.begin(), &OldState, labelIterator))
+				bStateChanged = true;
+			labelIterator++;
+		}
+	}
+	NewState = OldState;
+}
 
+void UImGuiBPFL::AddBulletToWindow()
+{
+	if (ValidateWindowFunction(true, "AddBulletToWindow", NullData, NullMessage))
+	{
+		ImGui::Bullet();
+	}
+}
+
+void UImGuiBPFL::AddProgressBarToWindow(FVector2D SizeInPixels, float Progress, FString Overlay)
+{
+	if (ValidateWindowFunction(true, "AddProgressBarToWindow", Overlay, NullMessage))
+	{
+		std::string ConvertBuffer = TCHAR_TO_UTF8(*Overlay);
+		ImGui::ProgressBar
+		(
+			Progress,
+			SizeInPixels.X == 0 && SizeInPixels.Y == 0 ? ImVec2(-FLT_MIN, 0) : ImVec2(SizeInPixels.X, SizeInPixels.Y),
+			Overlay == " " ? nullptr : &*ConvertBuffer.begin()
+		);
+	}
+}
+
+
+//Private
 
 bool UImGuiBPFL::ValidateWindowFunction(bool bShallPrintingFlagBeSet, FString FunctionName, FString PassedData, FString AdditionalErrorMessage)
 {

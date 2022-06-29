@@ -120,6 +120,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
 	static void AddCheckboxToWindow(FString Label, bool bOldState, bool& bNewState, bool& bStateChanged);
 
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void AddRadioButtonsToWindow(TSet<FString> Labels, int OldState, int& NewState, bool& bStateChanged);
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void AddBulletToWindow();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void AddProgressBarToWindow(FVector2D SizeInPixels, float Progress, FString Overlay = " ");
+
 private:
 
 	static bool ValidateWindowFunction(bool bShallPrintingFlagBeSet, FString FunctionName, FString PassedData, FString AdditionalErrorMessage);
