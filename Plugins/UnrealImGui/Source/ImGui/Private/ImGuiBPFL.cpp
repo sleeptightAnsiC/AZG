@@ -12,6 +12,8 @@ const FString NullData = "No Data";
 
 //Public
 
+//placeholders - test
+
 void UImGuiBPFL::PrintSimpleWindow(FString Name, FString Text, FVector2D RelativeScreenPosition)
 {
 	std::string ConvertBuffer = TCHAR_TO_UTF8(*Name);
@@ -61,30 +63,40 @@ void UImGuiBPFL::PrintSimpleWatermark(FString Name, FString Text, FVector2D Rela
 		ImGui::End();
 }
 
-void UImGuiBPFL::StartPrintingWindow(FString Name, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties)
+/*
+void UImGuiBPFL::TestFunction()
+{
+	ImGui::Begin("Test Window");
+	ImGui::BeginGroup();
+	ImGui::Text("Siema0");
+	ImGui::Text("Siema1");
+	ImGui::Text("Siema2");
+	ImGui::Text("Siema3");
+	static bool v;
+	ImGui::Checkbox("Test Checkbox", &v);
+
+	ImGui::EndGroup();
+
+	ImGui::End();
+}
+*/
+
+// Front-End for blueprints
+
+void UImGuiBPFL::StartPrintingMainWindow(FString Name, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties)
 {
 	if (ValidateWindowFunction(false, "StartPrintingWindow", Name, "You cannot start Printing another Window before closing the already existing one. Probably 'StopPrintingWindow()' is missing somewhere."))
 	{
-		bPrinting = true;
-
+		bPrinting = true; //global flag
 		ImGuiWindowFlags Flags = 0;
 		for (ImGui_WindowFlags SimpleFlag : Properties)
-		{
 			Flags += GetFixedWidnowFlag(SimpleFlag);
-		}
-
 		std::string ConvertBuffer = TCHAR_TO_UTF8(*Name);
 		ImGui::Begin(&*ConvertBuffer.begin(), nullptr, Flags);
-
-		/*
-		if (ImGui::Button("200x200")) { ImGui::SetWindowSize(ImVec2(200, 200)); } ImGui::SameLine();
-		if (ImGui::Button("500x500")) { ImGui::SetWindowSize(ImVec2(500, 500)); } ImGui::SameLine();
-		if (ImGui::Button("800x200")) { ImGui::SetWindowSize(ImVec2(800, 200)); }
-		*/
 	}
 }
 
-void UImGuiBPFL::StopPrintingWindow()
+void UImGuiBPFL::StopPrintingMainWindow()
 {
 	if (ValidateWindowFunction(true, "StopPrintingWindow", NullData, NullMessage))
 	{
@@ -182,8 +194,63 @@ void UImGuiBPFL::SetNextWindowFocused()
 	}
 }
 
+void UImGuiBPFL::AddCollapsingHeaderToWindow(FString Name, bool& bOpen)
+{
+	bOpen = false;
+	if (ValidateWindowFunction(true, "AddCollapsingHeaderToWindow", Name, NullMessage))
+	{
+		std::string ConvertBuffer = TCHAR_TO_UTF8(*Name);
+		bOpen = ImGui::CollapsingHeader(&*ConvertBuffer.begin());
+	}
+}
+
+void UImGuiBPFL::StartPrintingChild(FString Name, FVector2D SizeInPixels, bool bBorder, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties)
+{
+	if (ValidateWindowFunction(true, "StartPrintingChildWindow", Name, NullMessage))
+	{
+		ImGuiWindowFlags Flags = 0;
+		for (ImGui_WindowFlags SimpleFlag : Properties)
+			Flags += GetFixedWidnowFlag(SimpleFlag);
+		ImGui::BeginChild(GetTypeHash(Name), ImVec2(SizeInPixels.X, SizeInPixels.Y), bBorder, Flags);
+	}
+}
+
+void UImGuiBPFL::StopPrintingChild()
+{
+	if (ValidateWindowFunction(true, "StopPrintingChildWindow", NullData, NullMessage))
+	{
+		ImGui::EndChild();
+	}
+}
+
+void UImGuiBPFL::StartPrintingGroup()
+{
+	if (ValidateWindowFunction(true, "StartPrintingGroup", NullData, NullMessage))
+	{
+		ImGui::BeginGroup();
+	}
+}
+
+void UImGuiBPFL::StopPrintingGroup()
+{
+	if (ValidateWindowFunction(true, "StopPrintingGroup", NullData, NullMessage))
+	{
+		ImGui::EndGroup();
+	}
+}
 
 
+void UImGuiBPFL::AddCheckboxToWindow(FString Label, bool bOldState, bool& bNewState, bool& bStateChanged)
+{
+	bStateChanged = false;
+	if (ValidateWindowFunction(true, "AddCheckboxToWindow", NullData, NullMessage))
+	{
+		std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
+		if (ImGui::Checkbox(&*ConvertBuffer.begin(), &bOldState))
+			bStateChanged = true;
+	}
+	bNewState = bOldState;
+}
 
 //Private
 
@@ -203,7 +270,6 @@ bool UImGuiBPFL::ValidateWindowFunction(bool bShallPrintingFlagBeSet, FString Fu
 		return false;
 	}
 }
-
 
 void UImGuiBPFL::TextMousePosition()
 {

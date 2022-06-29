@@ -55,22 +55,25 @@ class IMGUI_API UImGuiBPFL : public UBlueprintFunctionLibrary
 
 public:
 
-	//placeholder-test
-	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta=(DevelopmentOnly))
+	//placeholders / test
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
 	static void PrintSimpleWindow(FString Name, FString Text, FVector2D RelativeScreenPosition);
 
-	//placeholder-test
-	UFUNCTION(BlueprintCallable, Category = "DearImGui")
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
 	static void PrintSimpleWatermark(FString Name, FString Text, FVector2D RelativeScreenPosition, bool bPrintTextOnly, float BackgroundAlpha);
+
+	//UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	//static void TestFunction();
 
 
 	// Front-End for blueprints
 
 	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
-	static void StartPrintingWindow(FString Name, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties);
+	static void StartPrintingMainWindow(FString Name, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties);
 
 	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
-	static void StopPrintingWindow();
+	static void StopPrintingMainWindow();
 
 	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
 	static void AddTextToWindow(FString Text);
@@ -99,8 +102,23 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
 	static void SetNextWindowFocused();
 
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void AddCollapsingHeaderToWindow(FString Name, bool& bOpen);
 
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void StartPrintingChild(FString Name, FVector2D SizeInPixels, bool bBorder, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties);
 
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void StopPrintingChild();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void StartPrintingGroup();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void StopPrintingGroup();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void AddCheckboxToWindow(FString Label, bool bOldState, bool& bNewState, bool& bStateChanged);
 
 private:
 
