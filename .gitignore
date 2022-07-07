@@ -14,3 +14,6 @@ Build
 *.xcodeproj
 *.xcworkspace
 Config/Version.ini
+Plugins/UnrealImGui/.gitignore
+Plugins/UnrealImGui/LICENSE
+Plugins/UnrealImGui/README.md
