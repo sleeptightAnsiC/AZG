@@ -288,16 +288,33 @@ void UImGuiBPFL::StopPrintingMenu()
 		ImGui::EndMenu();
 }
 
+void UImGuiBPFL::StartAddingToMenuBar()
+{
+	if (ValidateWindowFunction(true, "StartAddingToMenuBar", NullData, NullMessage))
+		ImGui::BeginMenuBar();
+}
+
+void UImGuiBPFL::StopAddingToMenuBar()
+{
+	if (ValidateWindowFunction(true, "StopAddingToMenuBar", NullData, NullMessage))
+		ImGui::EndMenuBar();
+}
+
+
+
 
 void UImGuiBPFL::TestFunction()
 {
-	ImGui::Begin("Test Window");
+	ImGui::Begin("Test Window", nullptr, ImGuiWindowFlags_MenuBar);
 
-
-	ImGui::Text("Siema0");
-	ImGui::Text("Siema1");
-	ImGui::Text("Siema2");
-	ImGui::Text("Siema3");
+	if (ImGui::BeginMenuBar())
+	{
+		ImGui::Text("Siema0");
+		ImGui::Text("Siema1");
+		ImGui::Text("Siema2");
+		ImGui::Text("Siema3");
+		ImGui::EndMenuBar();
+	}
 
 	ImGui::End();
 }
