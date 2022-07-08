@@ -135,6 +135,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
 	static void StopPrintingCombo();
 
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void StartPrintingMenu(FString Label, bool bEnabled, bool& bOpen);
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui", meta = (DevelopmentOnly))
+	static void StopPrintingMenu();
+
 private:
 
 	static bool ValidateWindowFunction(bool bShallPrintingFlagBeSet, FString FunctionName, FString PassedData, FString AdditionalErrorMessage);

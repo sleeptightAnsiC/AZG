@@ -62,31 +62,6 @@ void UImGuiBPFL::PrintSimpleWatermark(FString Name, FString Text, FVector2D Rela
 		ImGui::End();
 }
 
-void UImGuiBPFL::TestFunction()
-{
-	ImGui::Begin("Test Window");
-
-
-	ImGui::Text("Siema0");
-	ImGui::Text("Siema1");
-	ImGui::Text("Siema2");
-	ImGui::Text("Siema3");
-
-	static bool bFlag = true;
-	if (ImGui::BeginMenu("Test Menu", true))
-	{
-		static int radioData = 1;
-		ImGui::RadioButton("Test Radio Button 0", &radioData, 0);
-		ImGui::RadioButton("Test Radio Button 1", &radioData, 1);
-		ImGui::RadioButton("Test Radio Button 2", &radioData, 2);
-		ImGui::RadioButton("Test Radio Button 3", &radioData, 3);
-		ImGui::RadioButton("Test Radio Button 4", &radioData, 4);
-		ImGui::EndMenu();
-	}
-
-	ImGui::End();
-}
-
 
 //Public
 // Front-End for blueprints
@@ -296,6 +271,37 @@ void UImGuiBPFL::StopPrintingCombo()
 		ImGui::EndCombo();
 }
 
+void UImGuiBPFL::StartPrintingMenu(FString Label, bool bEnabled, bool& bOpen)
+{
+	bOpen = false;
+	if (ValidateWindowFunction(true, "StartPrintingMenu", NullData, NullMessage))
+	{
+		std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
+		bOpen =
+			ImGui::BeginMenu(&*ConvertBuffer.begin(), bEnabled);
+	}	
+}
+
+void UImGuiBPFL::StopPrintingMenu()
+{
+	if (ValidateWindowFunction(true, "StopPrintingMenu", NullData, NullMessage))
+		ImGui::EndMenu();
+}
+
+
+void UImGuiBPFL::TestFunction()
+{
+	ImGui::Begin("Test Window");
+
+
+	ImGui::Text("Siema0");
+	ImGui::Text("Siema1");
+	ImGui::Text("Siema2");
+	ImGui::Text("Siema3");
+
+	ImGui::End();
+}
+
 //Private
 
 bool UImGuiBPFL::ValidateWindowFunction(bool bShallPrintingFlagBeSet, FString FunctionName, FString PassedData, FString AdditionalErrorMessage)
@@ -314,7 +320,7 @@ bool UImGuiBPFL::ValidateWindowFunction(bool bShallPrintingFlagBeSet, FString Fu
 	}
 }
 
-void UImGuiBPFL::TextMousePosition()
+void UImGuiBPFL::TextMousePosition()  //do wywalenia
 {
 	ImGuiIO& io = ImGui::GetIO();
 	if (ImGui::IsMousePosValid())
