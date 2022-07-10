@@ -1,6 +1,8 @@
 // By UE Edytor dało się odpalić, trzeba najpierw zainstalować Visual Studio, które jest potrzebne do odbudowania niektórych plików /Kornel
 https://github.com/sleeptightAnsiC/UE5_AnotherZombieGame/wiki/Visual-Studio
 
+https://docs.unrealengine.com/5.0/en-US/setting-up-visual-studio-development-environment-for-cplusplus-projects-in-unreal-engine/
+
 Remember to install COMMUNITY Version of VS22
 and durign instalation include these
 
