@@ -68,7 +68,7 @@ void UImGuiBPFL::PrintSimpleWatermark(FString Name, FString Text, FVector2D Rela
 
 void UImGuiBPFL::StartPrintingMainWindow(FString Name, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties)
 {
-	if (ValidateWindowFunction(false, "StartPrintingWindow", Name, "You cannot start Printing another Window before closing the already existing one. Probably 'StopPrintingWindow()' is missing somewhere."))
+	//if (ValidateWindowFunction(false, "StartPrintingWindow", Name, "You cannot start Printing another Window before closing the already existing one. Probably 'StopPrintingWindow()' is missing somewhere."))
 	{
 		bPrinting = true; //global flag
 		ImGuiWindowFlags Flags = 0;
@@ -81,16 +81,16 @@ void UImGuiBPFL::StartPrintingMainWindow(FString Name, TSet<TEnumAsByte<ImGui_Wi
 
 void UImGuiBPFL::StopPrintingMainWindow()
 {
-	if (ValidateWindowFunction(true, "StopPrintingWindow", NullData, NullMessage))
+	//if (ValidateWindowFunction(true, "StopPrintingWindow", NullData, NullMessage))
 	{
 		ImGui::End();
 		bPrinting = false;
 	}
 }
 
-void UImGuiBPFL::AddTextToWindow(FString Text)
+void UImGuiBPFL::AddText(FString Text)
 {
-	if (ValidateWindowFunction(true, "AddTextToWindow", Text, NullMessage))
+	//if (ValidateWindowFunction(true, "AddText", Text, NullMessage))
 	{
 		std::string ConvertBuffer = TCHAR_TO_UTF8(*Text);
 		ImGui::Text(&*ConvertBuffer.begin());
@@ -99,35 +99,35 @@ void UImGuiBPFL::AddTextToWindow(FString Text)
 
 void UImGuiBPFL::StayInSameWindowLine()
 {
-	if (ValidateWindowFunction(true, "StayInSameWindowLine", NullData, NullMessage))
+	//if (ValidateWindowFunction(true, "StayInSameWindowLine", NullData, NullMessage))
 		ImGui::SameLine();
 }
 
-void UImGuiBPFL::AddButtonToWindow(FString Name, bool& bClicked)
+void UImGuiBPFL::AddButton(FString Name, bool& bClicked)
 {
 	bClicked = false;
-	if (ValidateWindowFunction(true, "AddButtonToWindow", Name, NullMessage))
+	//if (ValidateWindowFunction(true, "AddButton", Name, NullMessage))
 	{
 		std::string ConvertBuffer = TCHAR_TO_UTF8(*Name);
 		bClicked = ImGui::Button(&*ConvertBuffer.begin());
 	}
 }
 
-void UImGuiBPFL::AddSeparatorToWindow()
+void UImGuiBPFL::AddSeparator()
 {
-	if (ValidateWindowFunction(true, "AddSeparatorToWindow", NullData, NullMessage))
+	//if (ValidateWindowFunction(true, "AddSeparator", NullData, NullMessage))
 		ImGui::Separator();
 }
 
-void UImGuiBPFL::AddSpacingToWindow()
+void UImGuiBPFL::AddSpacing()
 {
-	if (ValidateWindowFunction(true, "AddSpacingToWindow", NullData, NullMessage))
+	//if (ValidateWindowFunction(true, "AddSpacing", NullData, NullMessage))
 		ImGui::Spacing();
 }
 
 void UImGuiBPFL::SetNextWindowRelativePosition(FVector2D RelativeScreenPosition, ImGui_WindowConditions Condition)
 {
-	if (ValidateWindowFunction(false, "SetNextWindowRelativePosition", FString::Printf(TEXT("%s"), *RelativeScreenPosition.ToString()), NullMessage))
+	//if (ValidateWindowFunction(false, "SetNextWindowRelativePosition", FString::Printf(TEXT("%s"), *RelativeScreenPosition.ToString()), NullMessage))
 	{
 		FVector2D ViewportSize
 			= FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
@@ -149,26 +149,26 @@ void UImGuiBPFL::SetNextWindowRelativePosition(FVector2D RelativeScreenPosition,
 
 void UImGuiBPFL::SetNextWindowBackgroundAlpha(float BackgroundAlpha)
 {
-	if (ValidateWindowFunction(false, "SetNextWindowBackgroundAlpha", FString::Printf(TEXT("%f"), BackgroundAlpha), NullMessage))
+	//if (ValidateWindowFunction(false, "SetNextWindowBackgroundAlpha", FString::Printf(TEXT("%f"), BackgroundAlpha), NullMessage))
 		ImGui::SetNextWindowBgAlpha(BackgroundAlpha);
 }
 
 void UImGuiBPFL::SetNextWindowCollapseState(bool bCollapsed) //Do-poprawy/przemyœlenia - brak Condition
 {
-	if (ValidateWindowFunction(false, "SetNextWindowCollapseState", FString::Printf(TEXT("%s"), bCollapsed ? TEXT("TRUE") : TEXT("FALSE")), NullMessage))
+	//if (ValidateWindowFunction(false, "SetNextWindowCollapseState", FString::Printf(TEXT("%s"), bCollapsed ? TEXT("TRUE") : TEXT("FALSE")), NullMessage))
 			ImGui::SetNextWindowCollapsed(bCollapsed, ImGuiCond_Always);
 }
 
 void UImGuiBPFL::SetNextWindowFocused()
 {
-	if (ValidateWindowFunction(false, "SetNextWindowFocused", NullData, NullMessage))
+	//if (ValidateWindowFunction(false, "SetNextWindowFocused", NullData, NullMessage))
 		ImGui::SetNextWindowFocus();
 }
 
-void UImGuiBPFL::AddCollapsingHeaderToWindow(FString Name, bool& bOpen)
+void UImGuiBPFL::AddCollapsingHeader(FString Name, bool& bOpen)
 {
 	bOpen = false;
-	if (ValidateWindowFunction(true, "AddCollapsingHeaderToWindow", Name, NullMessage))
+	//if (ValidateWindowFunction(true, "AddCollapsingHeader", Name, NullMessage))
 	{
 		std::string ConvertBuffer = TCHAR_TO_UTF8(*Name);
 		bOpen = ImGui::CollapsingHeader(&*ConvertBuffer.begin());
@@ -177,7 +177,7 @@ void UImGuiBPFL::AddCollapsingHeaderToWindow(FString Name, bool& bOpen)
 
 void UImGuiBPFL::StartPrintingChild(FString Name, FVector2D SizeInPixels, bool bBorder, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties)
 {
-	if (ValidateWindowFunction(true, "StartPrintingChildWindow", Name, NullMessage))
+	//if (ValidateWindowFunction(true, "StartPrintingChildWindow", Name, NullMessage))
 	{
 		ImGuiWindowFlags Flags = 0;
 		for (ImGui_WindowFlags SimpleFlag : Properties)
@@ -188,26 +188,26 @@ void UImGuiBPFL::StartPrintingChild(FString Name, FVector2D SizeInPixels, bool b
 
 void UImGuiBPFL::StopPrintingChild()
 {
-	if (ValidateWindowFunction(true, "StopPrintingChildWindow", NullData, NullMessage))
+	//if (ValidateWindowFunction(true, "StopPrintingChildWindow", NullData, NullMessage))
 		ImGui::EndChild();
 }
 
 void UImGuiBPFL::StartPrintingGroup()
 {
-	if (ValidateWindowFunction(true, "StartPrintingGroup", NullData, NullMessage))
+	//if (ValidateWindowFunction(true, "StartPrintingGroup", NullData, NullMessage))
 		ImGui::BeginGroup();
 }
 
 void UImGuiBPFL::StopPrintingGroup()
 {
-	if (ValidateWindowFunction(true, "StopPrintingGroup", NullData, NullMessage))
+	//if (ValidateWindowFunction(true, "StopPrintingGroup", NullData, NullMessage))
 		ImGui::EndGroup();
 }
 
-void UImGuiBPFL::AddCheckboxToWindow(FString Label, bool bOldState, bool& bNewState, bool& bStateChanged)
+void UImGuiBPFL::AddCheckbox(FString Label, bool bOldState, bool& bNewState, bool& bStateChanged)
 {
 	bStateChanged = false;
-	if (ValidateWindowFunction(true, "AddCheckboxToWindow", NullData, NullMessage))
+	//if (ValidateWindowFunction(true, "AddCheckbox", NullData, NullMessage))
 	{
 		std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
 		if (ImGui::Checkbox(&*ConvertBuffer.begin(), &bOldState))
@@ -216,10 +216,10 @@ void UImGuiBPFL::AddCheckboxToWindow(FString Label, bool bOldState, bool& bNewSt
 	bNewState = bOldState;
 }
 
-void UImGuiBPFL::AddRadioButtonsToWindow(TSet<FString> Labels, int OldState, int& NewState, bool& bStateChanged)
+void UImGuiBPFL::AddRadioButtons(TSet<FString> Labels, int OldState, int& NewState, bool& bStateChanged)
 {
 	bStateChanged = false;
-	if (ValidateWindowFunction(true, "AddRadioButtonsToWindow", NullData, NullMessage))
+	//if (ValidateWindowFunction(true, "AddRadioButtons", NullData, NullMessage))
 	{
 		int labelIterator = 0;
 		for (FString label : Labels)
@@ -233,15 +233,15 @@ void UImGuiBPFL::AddRadioButtonsToWindow(TSet<FString> Labels, int OldState, int
 	NewState = OldState;
 }
 
-void UImGuiBPFL::AddBulletToWindow()
+void UImGuiBPFL::AddBullet()
 {
-	if (ValidateWindowFunction(true, "AddBulletToWindow", NullData, NullMessage))
+	//if (ValidateWindowFunction(true, "AddBullet", NullData, NullMessage))
 		ImGui::Bullet();
 }
 
-void UImGuiBPFL::AddProgressBarToWindow(FVector2D SizeInPixels, float Progress, FString Overlay)
+void UImGuiBPFL::AddProgressBar(FVector2D SizeInPixels, float Progress, FString Overlay)
 {
-	if (ValidateWindowFunction(true, "AddProgressBarToWindow", Overlay, NullMessage))
+	//if (ValidateWindowFunction(true, "AddProgressBar", Overlay, NullMessage))
 	{
 		std::string ConvertBuffer = TCHAR_TO_UTF8(*Overlay);
 		ImGui::ProgressBar
@@ -256,7 +256,7 @@ void UImGuiBPFL::AddProgressBarToWindow(FVector2D SizeInPixels, float Progress, 
 void UImGuiBPFL::StartPrintingCombo(FString Label, FString Preview, bool& bOpen)
 {
 	bOpen = false;
-	if (ValidateWindowFunction(true, "StartPrintingCombo", Label + " / " + Preview, NullMessage))
+	//if (ValidateWindowFunction(true, "StartPrintingCombo", Label + " / " + Preview, NullMessage))
 	{
 		std::string ConvertBuffer_0 = TCHAR_TO_UTF8(*Label);
 		std::string ConvertBuffer_1 = TCHAR_TO_UTF8(*Preview);
@@ -267,14 +267,14 @@ void UImGuiBPFL::StartPrintingCombo(FString Label, FString Preview, bool& bOpen)
 
 void UImGuiBPFL::StopPrintingCombo()
 {
-	if (ValidateWindowFunction(true, "StopPrintingCombo", NullData, NullMessage))
+	//if (ValidateWindowFunction(true, "StopPrintingCombo", NullData, NullMessage))
 		ImGui::EndCombo();
 }
 
 void UImGuiBPFL::StartPrintingMenu(FString Label, bool bEnabled, bool& bOpen)
 {
 	bOpen = false;
-	if (ValidateWindowFunction(true, "StartPrintingMenu", NullData, NullMessage))
+	//if (ValidateWindowFunction(true, "StartPrintingMenu", NullData, NullMessage))
 	{
 		std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
 		bOpen =
@@ -284,38 +284,69 @@ void UImGuiBPFL::StartPrintingMenu(FString Label, bool bEnabled, bool& bOpen)
 
 void UImGuiBPFL::StopPrintingMenu()
 {
-	if (ValidateWindowFunction(true, "StopPrintingMenu", NullData, NullMessage))
+	//if (ValidateWindowFunction(true, "StopPrintingMenu", NullData, NullMessage))
 		ImGui::EndMenu();
 }
 
 void UImGuiBPFL::StartAddingToMenuBar()
 {
-	if (ValidateWindowFunction(true, "StartAddingToMenuBar", NullData, NullMessage))
+	//if (ValidateWindowFunction(true, "StartAddingToMenuBar", NullData, NullMessage))
 		ImGui::BeginMenuBar();
 }
 
 void UImGuiBPFL::StopAddingToMenuBar()
 {
-	if (ValidateWindowFunction(true, "StopAddingToMenuBar", NullData, NullMessage))
+	//if (ValidateWindowFunction(true, "StopAddingToMenuBar", NullData, NullMessage))
 		ImGui::EndMenuBar();
 }
 
+void UImGuiBPFL::StartPrintingMainMenuBar()
+{
+	ImGui::BeginMainMenuBar();
+}
 
+void UImGuiBPFL::StopPrintingMainMenuBar()
+{
+	ImGui::EndMainMenuBar();	
+}
+
+void UImGuiBPFL::AddMainMenuItem(FString Label, FString Shortcut, bool bSelected, bool bEnabled, bool& bClicked)
+{
+	std::string LabelConvertBuffer = TCHAR_TO_UTF8(*Label);
+	std::string ShortcutConvertBuffer = TCHAR_TO_UTF8(*Shortcut);
+	bClicked = 
+		ImGui::MenuItem(&*LabelConvertBuffer.begin(), &*LabelConvertBuffer.begin(), bSelected, bEnabled);
+}
+
+void UImGuiBPFL::TestGenericFunction(const TArray<UProperty*>& TargetArray, UProperty*& Item)
+{
+
+}
+
+FString UImGuiBPFL::Test(UProperty* Input, UProperty*& Item)
+{
+	if (typeid(Input) == typeid(bool))
+		return "bool";
+	return typeid(Input).name();
+
+	
+
+	//Item = (UProperty * )testvar;
+}
 
 
 void UImGuiBPFL::TestFunction()
 {
-	ImGui::Begin("Test Window", nullptr, ImGuiWindowFlags_MenuBar);
-
-	if (ImGui::BeginMenuBar())
+	ImGui::Begin("Test Window", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+	//ImGui::BeginMenuBar();
+	static bool bTestBooll = true;
+	ImGui::MenuItem("Test MenuItem", nullptr, &bTestBooll, true);
+	if (bTestBooll)
 	{
-		ImGui::Text("Siema0");
-		ImGui::Text("Siema1");
-		ImGui::Text("Siema2");
-		ImGui::Text("Siema3");
-		ImGui::EndMenuBar();
+		static int testint[4] = { 1,2,3,4 };
+		ImGui::DragIntRange2("Test DragIntRange2", &testint[0], &testint[1], (1.0f), -10, 10);
 	}
-
+	//ImGui::EndMenuBar();
 	ImGui::End();
 }
 
