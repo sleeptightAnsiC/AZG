@@ -318,22 +318,65 @@ void UImGuiBPFL::AddMainMenuItem(FString Label, FString Shortcut, bool bSelected
 		ImGui::MenuItem(&*LabelConvertBuffer.begin(), &*LabelConvertBuffer.begin(), bSelected, bEnabled);
 }
 
-void UImGuiBPFL::TestGenericFunction(const TArray<UProperty*>& TargetArray, UProperty*& Item)
-{
+//DRAG
 
+void UImGuiBPFL::AddDragFloat(FString Label, UPARAM(ref) float& DraggedVariable, float DragSpeed, float MinValue, float MaxValue)
+{
+	std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
+	ImGui::DragFloat(&*ConvertBuffer.begin(), &DraggedVariable, DragSpeed, MinValue, MaxValue);
 }
 
-FString UImGuiBPFL::Test(UProperty* Input, UProperty*& Item)
+void UImGuiBPFL::AddDragInt(FString Label, UPARAM(ref) int& DraggedVariable, float DragSpeed, float MinValue, float MaxValue)
 {
-	if (typeid(Input) == typeid(bool))
-		return "bool";
-	return typeid(Input).name();
-
-	
-
-	//Item = (UProperty * )testvar;
+	std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
+	ImGui::DragInt(&*ConvertBuffer.begin(), &DraggedVariable, DragSpeed, MinValue, MaxValue);
 }
 
+void UImGuiBPFL::AddDragVector2D(FString Label, UPARAM(ref) FVector2D& DraggedVariable, float DragSpeed, float MinValue, float MaxValue)
+{
+	float PassByRefArray[2] = { DraggedVariable.X, DraggedVariable.Y };
+	std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
+	ImGui::DragFloat2(&*ConvertBuffer.begin(), PassByRefArray, DragSpeed, MinValue, MaxValue);
+	DraggedVariable.X = PassByRefArray[0];
+	DraggedVariable.Y = PassByRefArray[1];
+}
+
+void UImGuiBPFL::AddDragVector(FString Label, UPARAM(ref) FVector& DraggedVariable, float DragSpeed, float MinValue, float MaxValue)
+{
+	float PassByRefArray[3] = { DraggedVariable.X, DraggedVariable.Y, DraggedVariable.Z };
+	std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
+	ImGui::DragFloat3(&*ConvertBuffer.begin(), PassByRefArray, DragSpeed, MinValue, MaxValue);
+	DraggedVariable.X = PassByRefArray[0];
+	DraggedVariable.Y = PassByRefArray[1];
+	DraggedVariable.Z = PassByRefArray[2];
+}
+
+void UImGuiBPFL::AddDragVector4(FString Label, UPARAM(ref) FVector4& DraggedVariable, float DragSpeed, float MinValue, float MaxValue)
+{
+	float PassByRefArray[4] = { DraggedVariable.X, DraggedVariable.Y, DraggedVariable.Z, DraggedVariable.W };
+	std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
+	ImGui::DragFloat4(&*ConvertBuffer.begin(), PassByRefArray, DragSpeed, MinValue, MaxValue);
+	DraggedVariable.X = PassByRefArray[0];
+	DraggedVariable.Y = PassByRefArray[1];
+	DraggedVariable.Z = PassByRefArray[2];
+	DraggedVariable.W = PassByRefArray[3];
+}
+
+void UImGuiBPFL::AddDragRotator(FString Label, UPARAM(ref) FRotator& DraggedVariable, float DragSpeed, float MinValue, float MaxValue)
+{
+	float PassByRefArray[3] = { DraggedVariable.Roll, DraggedVariable.Pitch, DraggedVariable.Yaw };
+	std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
+	ImGui::DragFloat3(&*ConvertBuffer.begin(), PassByRefArray, DragSpeed, MinValue, MaxValue);
+	DraggedVariable.Roll = PassByRefArray[0];
+	DraggedVariable.Pitch = PassByRefArray[1];
+	DraggedVariable.Yaw = PassByRefArray[2];
+}
+
+
+
+
+
+//TEST Func
 
 void UImGuiBPFL::TestFunction()
 {
@@ -343,8 +386,9 @@ void UImGuiBPFL::TestFunction()
 	ImGui::MenuItem("Test MenuItem", nullptr, &bTestBooll, true);
 	if (bTestBooll)
 	{
-		static int testint[4] = { 1,2,3,4 };
-		ImGui::DragIntRange2("Test DragIntRange2", &testint[0], &testint[1], (1.0f), -10, 10);
+		//static int testint[4] = { 1,2,3,4 };
+		static float v = 0;
+		ImGui::DragFloat("Test DragIntRange2",  &v);
 	}
 	//ImGui::EndMenuBar();
 	ImGui::End();
