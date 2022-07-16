@@ -320,61 +320,29 @@ void UImGuiBPFL::AddMainMenuItem(FString Label, FString Shortcut, bool bSelected
 
 //DRAG
 
-void UImGuiBPFL::AddDragFloat(FString Label, UPARAM(ref) float& DraggedVariable, float DragSpeed, float MinValue, float MaxValue)
+void UImGuiBPFL::AddDragFloatArray(FString Label, UPARAM(ref) TArray<float>& DraggedArrayReference, float DragSpeed, float MinValue, float MaxValue)
 {
+	float* PassByRefArray = new float[DraggedArrayReference.Num()];
+	for (int i = 0; i < DraggedArrayReference.Num(); i++)
+		PassByRefArray[i] = DraggedArrayReference[i];
 	std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
-	ImGui::DragFloat(&*ConvertBuffer.begin(), &DraggedVariable, DragSpeed, MinValue, MaxValue);
+	ImGui::DragScalarN(&*ConvertBuffer.begin(), ImGuiDataType_Float, PassByRefArray, DraggedArrayReference.Num(), DragSpeed, &MinValue, &MaxValue);
+	for (int i = 0; i < DraggedArrayReference.Num(); i++)
+		DraggedArrayReference[i] = PassByRefArray[i];
+	delete[] PassByRefArray;
 }
 
-void UImGuiBPFL::AddDragInt(FString Label, UPARAM(ref) int& DraggedVariable, float DragSpeed, float MinValue, float MaxValue)
+void UImGuiBPFL::AddDragIntArray(FString Label, UPARAM(ref) TArray<int>& DraggedArrayReference, float DragSpeed, int MinValue, int MaxValue)
 {
+	int* PassByRefArray = new int[DraggedArrayReference.Num()];
+	for (int i = 0; i < DraggedArrayReference.Num(); i++)
+		PassByRefArray[i] = DraggedArrayReference[i];
 	std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
-	ImGui::DragInt(&*ConvertBuffer.begin(), &DraggedVariable, DragSpeed, MinValue, MaxValue);
+	ImGui::DragScalarN(&*ConvertBuffer.begin(), ImGuiDataType_S32, PassByRefArray, DraggedArrayReference.Num(), DragSpeed, &MinValue, &MaxValue);
+	for (int i = 0; i < DraggedArrayReference.Num(); i++)
+		DraggedArrayReference[i] = PassByRefArray[i];
+	delete[] PassByRefArray;
 }
-
-void UImGuiBPFL::AddDragVector2D(FString Label, UPARAM(ref) FVector2D& DraggedVariable, float DragSpeed, float MinValue, float MaxValue)
-{
-	float PassByRefArray[2] = { DraggedVariable.X, DraggedVariable.Y };
-	std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
-	ImGui::DragFloat2(&*ConvertBuffer.begin(), PassByRefArray, DragSpeed, MinValue, MaxValue);
-	DraggedVariable.X = PassByRefArray[0];
-	DraggedVariable.Y = PassByRefArray[1];
-}
-
-void UImGuiBPFL::AddDragVector(FString Label, UPARAM(ref) FVector& DraggedVariable, float DragSpeed, float MinValue, float MaxValue)
-{
-	float PassByRefArray[3] = { DraggedVariable.X, DraggedVariable.Y, DraggedVariable.Z };
-	std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
-	ImGui::DragFloat3(&*ConvertBuffer.begin(), PassByRefArray, DragSpeed, MinValue, MaxValue);
-	DraggedVariable.X = PassByRefArray[0];
-	DraggedVariable.Y = PassByRefArray[1];
-	DraggedVariable.Z = PassByRefArray[2];
-}
-
-void UImGuiBPFL::AddDragVector4(FString Label, UPARAM(ref) FVector4& DraggedVariable, float DragSpeed, float MinValue, float MaxValue)
-{
-	float PassByRefArray[4] = { DraggedVariable.X, DraggedVariable.Y, DraggedVariable.Z, DraggedVariable.W };
-	std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
-	ImGui::DragFloat4(&*ConvertBuffer.begin(), PassByRefArray, DragSpeed, MinValue, MaxValue);
-	DraggedVariable.X = PassByRefArray[0];
-	DraggedVariable.Y = PassByRefArray[1];
-	DraggedVariable.Z = PassByRefArray[2];
-	DraggedVariable.W = PassByRefArray[3];
-}
-
-void UImGuiBPFL::AddDragRotator(FString Label, UPARAM(ref) FRotator& DraggedVariable, float DragSpeed, float MinValue, float MaxValue)
-{
-	float PassByRefArray[3] = { DraggedVariable.Roll, DraggedVariable.Pitch, DraggedVariable.Yaw };
-	std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
-	ImGui::DragFloat3(&*ConvertBuffer.begin(), PassByRefArray, DragSpeed, MinValue, MaxValue);
-	DraggedVariable.Roll = PassByRefArray[0];
-	DraggedVariable.Pitch = PassByRefArray[1];
-	DraggedVariable.Yaw = PassByRefArray[2];
-}
-
-
-
-
 
 //TEST Func
 

@@ -9,7 +9,7 @@
 
 
 
-	UENUM(BlueprintType)//, Category = "DearImGui|FunctionsLibrary")
+	UENUM(BlueprintType)//, Category = "DearImGui|C++ Functions")
 		enum ImGui_WindowFlags
 	{
 		None                         UMETA(DisplayName = "Null"),
@@ -38,7 +38,7 @@
 		NoInputs                     UMETA(DisplayName = "NoInputs")
 	};
 
-	UENUM(BlueprintType)//, Category = "DearImGui|FunctionsLibrary")
+	UENUM(BlueprintType)//, Category = "DearImGui|C++ Functions")
 		enum ImGui_WindowConditions
 	{
 		Nothing = ImGuiCond_None				UMETA(DisplayName = "Null"),
@@ -49,7 +49,7 @@
 	};
 
 
-	UENUM(BlueprintType)//, Category = "DearImGui|FunctionsLibrary")
+	UENUM(BlueprintType)//, Category = "DearImGui|C++ Functions")
 		enum ImGui_DragType
 	{
 		Drag_Float		UMETA(DisplayName = "Float"),
@@ -73,125 +73,113 @@ public:
 
 	//placeholders / test
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void PrintSimpleWindow(FString Name, FString Text, FVector2D RelativeScreenPosition);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void PrintSimpleWatermark(FString Name, FString Text, FVector2D RelativeScreenPosition, bool bPrintTextOnly, float BackgroundAlpha);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void TestFunction();
 
 
 	// Front-End for blueprints
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void StartPrintingMainWindow(FString Name, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void StopPrintingMainWindow();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void AddText(FString Text);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void StayInSameWindowLine();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void AddButton(FString Name, bool& bClicked);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void AddSeparator();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void AddSpacing();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void SetNextWindowRelativePosition(FVector2D RelativeScreenPosition, ImGui_WindowConditions Condition);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void SetNextWindowBackgroundAlpha(float BackgroundAlpha);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void SetNextWindowCollapseState(bool bCollapsed);  //Do-poprawy/przemyœlenia - brak Condition
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void SetNextWindowFocused();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void AddCollapsingHeader(FString Name, bool& bOpen);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void StartPrintingChild(FString Name, FVector2D SizeInPixels, bool bBorder, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void StopPrintingChild();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void StartPrintingGroup();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void StopPrintingGroup();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void AddCheckbox(FString Label, bool bOldState, bool& bNewState, bool& bStateChanged);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void AddRadioButtons(TSet<FString> Labels, int OldState, int& NewState, bool& bStateChanged);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void AddBullet();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void AddProgressBar(FVector2D SizeInPixels, float Progress, FString Overlay = " ");
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void StartPrintingCombo(FString Label, FString Preview, bool& bOpen);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void StopPrintingCombo();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void StartPrintingMenu(FString Label, bool bEnabled, bool& bOpen);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void StopPrintingMenu();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void StartAddingToMenuBar();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void StopAddingToMenuBar();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void StartPrintingMainMenuBar();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void StopPrintingMainMenuBar();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void AddMainMenuItem(FString Label, FString Shortcut, bool bSelected, bool bEnabled, bool& bClicked);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
-	static void AddDragFloat(FString Label, UPARAM(ref) float& DraggedVariable, float DragSpeed = 1.0f, float MinValue = 0.0f, float MaxValue = 0.0f);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
-	static void AddDragInt(FString Label, UPARAM(ref) int& DraggedVariable, float DragSpeed = 1.0f, float MinValue = 0.0f, float MaxValue = 0.0f);
+	//DRAG
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
-	static void AddDragVector2D(FString Label, UPARAM(ref) FVector2D& DraggedVariable, float DragSpeed = 1.0f, float MinValue = 0.0f, float MaxValue = 0.0f);
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
+	static void AddDragFloatArray(FString Label, UPARAM(ref) TArray<float>& DraggedArrayReference, float DragSpeed = 1.0f, float MinValue = 0.0f, float MaxValue = 0.0f);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
-	static void AddDragVector(FString Label, UPARAM(ref) FVector& DraggedVariable, float DragSpeed = 1.0f, float MinValue = 0.0f, float MaxValue = 0.0f);
-
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
-	static void AddDragVector4(FString Label, UPARAM(ref) FVector4& DraggedVariable, float DragSpeed = 1.0f, float MinValue = 0.0f, float MaxValue = 0.0f);
-
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|FunctionsLibrary", meta = (DevelopmentOnly))
-	static void AddDragRotator(FString Label, UPARAM(ref) FRotator& DraggedVariable, float DragSpeed = 1.0f, float MinValue = 0.0f, float MaxValue = 0.0f);
-
-
-
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
+	static void AddDragIntArray(FString Label, UPARAM(ref) TArray<int>& DraggedArrayReference, float DragSpeed = 1.0f, int MinValue = 0, int MaxValue = 0);
 
 
 private:
