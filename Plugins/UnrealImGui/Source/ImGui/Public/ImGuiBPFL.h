@@ -9,58 +9,84 @@
 
 
 
-	UENUM(BlueprintType)//, Category = "DearImGui|C++ Functions")
-		enum ImGui_WindowFlags
-	{
-		None                         UMETA(DisplayName = "Null"),
-		NoTitleBar                   UMETA(DisplayName = "NoTitleBar"),                  // Disable title-bar
-		NoResize                     UMETA(DisplayName = "NoResize"),                    // Disable user resizing with the lower-right grip
-		NoMove                       UMETA(DisplayName = "NoMove"),                      // Disable user moving the window
-		NoScrollbar                  UMETA(DisplayName = "NoScrollbar"),                 // Disable scrollbars (window can still scroll with mouse or programmatically)
-		NoScrollWithMouse            UMETA(DisplayName = "NoScrollWithMouse"),           // Disable user vertically scrolling with mouse wheel. On child window, mouse wheel will be forwarded to the parent unless NoScrollbar is also set.
-		NoCollapse                   UMETA(DisplayName = "NoCollapse"),                  // Disable user collapsing window by double-clicking on it. Also referred to as Window Menu Button (e.g. within a docking node).
-		AlwaysAutoResize             UMETA(DisplayName = "AlwaysAutoResize"),            // Resize every window to its content every frame
-		NoBackground                 UMETA(DisplayName = "NoBackground"),                // Disable drawing background color (WindowBg, etc.) and outside border. Similar as using SetNextWindowBgAlpha(0.0f).
-		NoSavedSettings              UMETA(DisplayName = "NoSavedSettings"),             // Never load/save settings in .ini file
-		NoMouseInputs                UMETA(DisplayName = "NoMouseInputs"),               // Disable catching mouse, hovering test with pass through.
-		MenuBar                      UMETA(DisplayName = "MenuBar"),                     // Has a menu-bar
-		HorizontalScrollbar          UMETA(DisplayName = "HorizontalScrollbar"),         // Allow horizontal scrollbar to appear (off by default). You may use SetNextWindowContentSize(ImVec2(width,0.0f)); prior to calling Begin() to specify width. Read code in imgui_demo in the "Horizontal Scrolling" section.
-		NoFocusOnAppearing           UMETA(DisplayName = "NoFocusOnAppearing"),          // Disable taking focus when transitioning from hidden to visible state
-		NoBringToFrontOnFocus        UMETA(DisplayName = "NoBringToFrontOnFocus"),       // Disable bringing window to front when taking focus (e.g. clicking on it or programmatically giving it focus)
-		AlwaysVerticalScrollbar      UMETA(DisplayName = "AlwaysVerticalScrollbar"),     // Always show vertical scrollbar (even if ContentSize.y < Size.y)
-		AlwaysHorizontalScrollbar    UMETA(DisplayName = "AlwaysHorizontalScrollbar"),   // Always show horizontal scrollbar (even if ContentSize.x < Size.x)
-		AlwaysUseWindowPadding       UMETA(DisplayName = "AlwaysUseWindowPadding"),      // Ensure child windows without border uses style.WindowPadding (ignored by default for non-bordered child windows, because more convenient)
-		NoNavInputs                  UMETA(DisplayName = "NoNavInputs"),                 // No gamepad/keyboard navigation within the window
-		NoNavFocus                   UMETA(DisplayName = "NoNavFocus"),                  // No focusing toward this window with gamepad/keyboard navigation (e.g. skipped by CTRL+TAB)
-		UnsavedDocument              UMETA(DisplayName = "UnsavedDocument"),             // Display a dot next to the title. When used in a tab/docking context, tab is selected when clicking the X + closure is not assumed (will wait for user to stop submitting the tab). Otherwise closure is assumed when pressing the X, so if you keep submitting the tab may reappear at end of tab bar.
-		NoNav                        UMETA(DisplayName = "NoNav"),
-		NoDecoration                 UMETA(DisplayName = "NoDecoration"),
-		NoInputs                     UMETA(DisplayName = "NoInputs")
-	};
+UENUM(BlueprintType)
+enum ImGui_WindowFlags
+{
+	None                         UMETA(DisplayName = "Null"),
+	NoTitleBar                   UMETA(DisplayName = "NoTitleBar"),                  // Disable title-bar
+	NoResize                     UMETA(DisplayName = "NoResize"),                    // Disable user resizing with the lower-right grip
+	NoMove                       UMETA(DisplayName = "NoMove"),                      // Disable user moving the window
+	NoScrollbar                  UMETA(DisplayName = "NoScrollbar"),                 // Disable scrollbars (window can still scroll with mouse or programmatically)
+	NoScrollWithMouse            UMETA(DisplayName = "NoScrollWithMouse"),           // Disable user vertically scrolling with mouse wheel. On child window, mouse wheel will be forwarded to the parent unless NoScrollbar is also set.
+	NoCollapse                   UMETA(DisplayName = "NoCollapse"),                  // Disable user collapsing window by double-clicking on it. Also referred to as Window Menu Button (e.g. within a docking node).
+	AlwaysAutoResize             UMETA(DisplayName = "AlwaysAutoResize"),            // Resize every window to its content every frame
+	NoBackground                 UMETA(DisplayName = "NoBackground"),                // Disable drawing background color (WindowBg, etc.) and outside border. Similar as using SetNextWindowBgAlpha(0.0f).
+	NoSavedSettings              UMETA(DisplayName = "NoSavedSettings"),             // Never load/save settings in .ini file
+	NoMouseInputs                UMETA(DisplayName = "NoMouseInputs"),               // Disable catching mouse, hovering test with pass through.
+	MenuBar                      UMETA(DisplayName = "MenuBar"),                     // Has a menu-bar
+	HorizontalScrollbar          UMETA(DisplayName = "HorizontalScrollbar"),         // Allow horizontal scrollbar to appear (off by default). You may use SetNextWindowContentSize(ImVec2(width,0.0f)); prior to calling Begin() to specify width. Read code in imgui_demo in the "Horizontal Scrolling" section.
+	NoFocusOnAppearing           UMETA(DisplayName = "NoFocusOnAppearing"),          // Disable taking focus when transitioning from hidden to visible state
+	NoBringToFrontOnFocus        UMETA(DisplayName = "NoBringToFrontOnFocus"),       // Disable bringing window to front when taking focus (e.g. clicking on it or programmatically giving it focus)
+	AlwaysVerticalScrollbar      UMETA(DisplayName = "AlwaysVerticalScrollbar"),     // Always show vertical scrollbar (even if ContentSize.y < Size.y)
+	AlwaysHorizontalScrollbar    UMETA(DisplayName = "AlwaysHorizontalScrollbar"),   // Always show horizontal scrollbar (even if ContentSize.x < Size.x)
+	AlwaysUseWindowPadding       UMETA(DisplayName = "AlwaysUseWindowPadding"),      // Ensure child windows without border uses style.WindowPadding (ignored by default for non-bordered child windows, because more convenient)
+	NoNavInputs                  UMETA(DisplayName = "NoNavInputs"),                 // No gamepad/keyboard navigation within the window
+	NoNavFocus                   UMETA(DisplayName = "NoNavFocus"),                  // No focusing toward this window with gamepad/keyboard navigation (e.g. skipped by CTRL+TAB)
+	UnsavedDocument              UMETA(DisplayName = "UnsavedDocument"),             // Display a dot next to the title. When used in a tab/docking context, tab is selected when clicking the X + closure is not assumed (will wait for user to stop submitting the tab). Otherwise closure is assumed when pressing the X, so if you keep submitting the tab may reappear at end of tab bar.
+	NoNav                        UMETA(DisplayName = "NoNav"),
+	NoDecoration                 UMETA(DisplayName = "NoDecoration"),
+	NoInputs                     UMETA(DisplayName = "NoInputs")
+};
 
-	UENUM(BlueprintType)//, Category = "DearImGui|C++ Functions")
-		enum ImGui_WindowConditions
-	{
-		Nothing = ImGuiCond_None				UMETA(DisplayName = "Null"),
-		Once = ImGuiCond_Once					UMETA(DisplayName = "Once"),
-		Always = ImGuiCond_Always				UMETA(DisplayName = "Always"),
-		FirstUseEver = ImGuiCond_FirstUseEver	UMETA(DisplayName = "FirstUseEver"),
-		Appearing = ImGuiCond_Appearing			UMETA(DisplayName = "Appearing")
-	};
+UENUM(BlueprintType)
+enum ImGui_WindowConditions
+{
+	Nothing = ImGuiCond_None				UMETA(DisplayName = "Null"),
+	Once = ImGuiCond_Once					UMETA(DisplayName = "Once"),
+	Always = ImGuiCond_Always				UMETA(DisplayName = "Always"),
+	FirstUseEver = ImGuiCond_FirstUseEver	UMETA(DisplayName = "FirstUseEver"),
+	Appearing = ImGuiCond_Appearing			UMETA(DisplayName = "Appearing")
+};
 
 
-	UENUM(BlueprintType)//, Category = "DearImGui|C++ Functions")
-		enum ImGui_DragType
-	{
-		Drag_Float		UMETA(DisplayName = "Float"),
-		Drag_Int		UMETA(DisplayName = "Int"),
-		Drag_Vector2D	UMETA(DisplayName = "Vector 2D"),
-		Drag_Vector		UMETA(DisplayName = "Vector"),
-		Drag_Vector4	UMETA(DisplayName = "Vector 4"),
-		Drag_Rotator	UMETA(DisplayName = "Rotator"),
-		Drag_Transform	UMETA(DisplayName = "Transform"),
-		Drag_Color		UMETA(DisplayName = "Color")
-	};
+UENUM(BlueprintType)
+enum ImGui_DragType
+{
+	Drag_Float		UMETA(DisplayName = "Float"),
+	Drag_Int		UMETA(DisplayName = "Int"),
+	Drag_Vector2D	UMETA(DisplayName = "Vector 2D"),
+	Drag_Vector		UMETA(DisplayName = "Vector"),
+	Drag_Vector4	UMETA(DisplayName = "Vector 4"),
+	Drag_Rotator	UMETA(DisplayName = "Rotator"),
+	Drag_Transform	UMETA(DisplayName = "Transform"),
+	Drag_Color		UMETA(DisplayName = "Color")
+};
+
+UENUM(BlueprintType)
+enum ImGui_InputTextType
+{
+	InputText_None					UMETA(DisplayName = "NULL"),				//ImGuiInputTextFlags_None
+	InputText_CharsDecimal			UMETA(DisplayName = "DecimalChars"),		//ImGuiInputTextFlags_CharsDecimal        // Allow 0123456789.+-*/
+	//not-needed																//ImGuiInputTextFlags_CharsHexadecimal    // Allow 0123456789ABCDEFabcdef
+	InputText_Uppercases			UMETA(DisplayName = "Uppercases"),			//ImGuiInputTextFlags_CharsUppercase      // Turn a..z into A..Z
+	InputText_NoBlanks				UMETA(DisplayName = "NoBlanks"),			//ImGuiInputTextFlags_CharsNoBlank        // Filter out spaces, tabs
+	InputText_AutoSelectAll			UMETA(DisplayName = "AutoSelectAll"),		//ImGuiInputTextFlags_AutoSelectAll       // Select entire text when first taking mouse focus
+	InputText_EnterReturnsTrue		UMETA(DisplayName = "EnterReturnsTrue"),	//ImGuiInputTextFlags_EnterReturnsTrue    // Return 'true' when Enter is pressed (as opposed to every time the value was modified). Consider looking at the IsItemDeactivatedAfterEdit() function.
+	//not-needed																//ImGuiInputTextFlags_CallbackCompletion  // Callback on pressing TAB (for completion handling)
+	//not-needed																//ImGuiInputTextFlags_CallbackHistory     // Callback on pressing Up/Down arrows (for history handling)
+	//not-needed																//ImGuiInputTextFlags_CallbackAlways      // Callback on each iteration. User code may query cursor position, modify text buffer.
+	//not-needed																//ImGuiInputTextFlags_CallbackCharFilter  // Callback on character inputs to replace or discard them. Modify 'EventChar' to replace or discard, or return 1 in callback to discard.
+	InputText_AllowTabInput			UMETA(DisplayName = "AllowTabInput"),		//ImGuiInputTextFlags_AllowTabInput       // Pressing TAB input a '\t' character into the text field
+	InputText_CtrlEnterForNewLine	UMETA(DisplayName = "CtrlEnterForNewLine"),	//ImGuiInputTextFlags_CtrlEnterForNewLine // In multi-line mode, unfocus with Enter, add new line with Ctrl+Enter (default is opposite: unfocus with Ctrl+Enter, add line with Enter).
+	InputText_NoHorizontalScroll	UMETA(DisplayName = "NoHorizontalScroll"),	//ImGuiInputTextFlags_NoHorizontalScroll  // Disable following the cursor horizontally
+	//not-needed																//ImGuiInputTextFlags_AlwaysOverwrite     // Overwrite mode
+	InputText_ReadOnly				UMETA(DisplayName = "ReadOnly"),			//ImGuiInputTextFlags_ReadOnly            // Read-only mode
+	InputText_Password				UMETA(DisplayName = "Password"),			//ImGuiInputTextFlags_Password            // Password mode, display all characters as '*'
+	InputText_NoUndoRedo			UMETA(DisplayName = "NoUndoRedo"),			//ImGuiInputTextFlags_NoUndoRedo          // Disable undo/redo. Note that input text owns the text data while active, if you want to provide your own undo/redo stack you need e.g. to call ClearActiveID().
+	InputText_CharsScientific		UMETA(DisplayName = "ScientificChars")		//ImGuiInputTextFlags_CharsScientific     // Allow 0123456789.+-*/eE (Scientific notation input)
+	//not-needed																//ImGuiInputTextFlags_CallbackResize      // Callback on buffer capacity changes request (beyond 'buf_size' parameter value), allowing the string to grow. Notify when the string wants to be resized (for string types which hold a cache of their Size). You will be provided a new BufSize in the callback and NEED to honor it. (see misc/cpp/imgui_stdlib.h for an example of using this)
+	//not-needed																//ImGuiInputTextFlags_CallbackEdit        // Callback on any edit (note that InputText() already returns true on edit, the callback is useful mainly to manipulate the underlying buffer while focus is active)
+};
 
 
 
@@ -172,21 +198,26 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void AddMainMenuItem(FString Label, FString Shortcut, bool bSelected, bool bEnabled, bool& bClicked);
 
-
-	//DRAG
-
 	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void AddDragFloatArray(FString Label, UPARAM(ref) TArray<float>& DraggedArrayReference, float DragSpeed = 1.0f, float MinValue = 0.0f, float MaxValue = 0.0f);
 
 	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void AddDragIntArray(FString Label, UPARAM(ref) TArray<int>& DraggedArrayReference, float DragSpeed = 1.0f, int MinValue = 0, int MaxValue = 0);
 
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
+	static void AddSliderFloatArray(FString Label, UPARAM(ref) TArray<float>& DraggedArrayReference, float MinValue = 0.0f, float MaxValue = 100.0f);
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
+	static void AddSliderIntArray(FString Label, UPARAM(ref) TArray<int>& DraggedArrayReference, int MinValue = 0, int MaxValue = 100);
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
+	static void AddInputTextBox(FString Label, FString Hint, UPARAM(ref) FString& InputedString, int MaxCharactersCount, FVector2D BoxSize, TSet<TEnumAsByte<ImGui_InputTextType>> Properties, bool& bCallback);	  //finish me
 
 private:
 
-	static bool ValidateWindowFunction(bool bShallPrintingFlagBeSet, FString FunctionName, FString PassedData, FString AdditionalErrorMessage);
+    static ImGuiWindowFlags GetFixedWidnowFlag(ImGui_WindowFlags Flag);	  
 
-	static void TextMousePosition();
+	static ImGuiInputTextFlags GetFixedInputTextFlag(ImGui_InputTextType Flag);
 
-    static ImGuiWindowFlags GetFixedWidnowFlag(ImGui_WindowFlags Flag);
+	static ImVec2 ScreenSizeToPixels(FVector2D ScreenSize = FVector2D(0, 0));
 };

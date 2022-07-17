@@ -3477,6 +3477,14 @@ bool ImGui::InputScalarN(const char* label, ImGuiDataType data_type, void* p_dat
     return value_changed;
 }
 
+
+//redeclared InputTextEx function to avoid linker errors when including "imgui_internal.h"
+bool ImGui::InputTextExSafe(const char* label, const char* hint, char* buf, int buf_size, const ImVec2& size_arg, ImGuiInputTextFlags flags, ImGuiInputTextCallback callback, void* user_data)
+{
+    return InputTextEx(label, hint, buf, buf_size, size_arg, flags, callback, user_data);
+}
+
+
 bool ImGui::InputFloat(const char* label, float* v, float step, float step_fast, const char* format, ImGuiInputTextFlags flags)
 {
     flags |= ImGuiInputTextFlags_CharsScientific;
