@@ -8,6 +8,7 @@
 #include "ImGuiBPFL.generated.h"
 
 
+/* structs */
 
 UENUM(BlueprintType)
 enum ImGui_WindowFlags
@@ -99,68 +100,136 @@ public:
 
 	//placeholders / test
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
-	static void PrintSimpleWindow(FString Name, FString Text, FVector2D RelativeScreenPosition);
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Placeholders", meta = (DevelopmentOnly))
+	static void PrintSimpleWindow(FString Name, FString Text, FVector2D ScreenPosition);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
-	static void PrintSimpleWatermark(FString Name, FString Text, FVector2D RelativeScreenPosition, bool bPrintTextOnly, float BackgroundAlpha);
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Placeholders", meta = (DevelopmentOnly))
+	static void PrintSimpleWatermark(FString Name, FString Text, FVector2D ScreenPosition, bool bPrintTextOnly, float BackgroundAlpha);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Placeholders", meta = (DevelopmentOnly))
 	static void TestFunction();
 
 
-	// Front-End for blueprints
+	/* - Functions for Blueprint Graphs -	*/
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
+// Context creation and access
+
+/* Main	*/
+
+// Demo, Debug, Information		
+// Styles
+
+/* Windows */
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
 	static void StartPrintingMainWindow(FString Name, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
 	static void StopPrintingMainWindow();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
-	static void AddText(FString Text);
+/* Child Windows */
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
-	static void StayInSameWindowLine();
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	static void StartPrintingChild(FString Name, FVector2D SizeInPixels, bool bBorder, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
-	static void AddButton(FString Name, bool& bClicked);
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	static void StopPrintingChild();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
-	static void AddSeparator();
+// Windows Utilities
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
-	static void AddSpacing();
+/* Window manipulation */
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
-	static void SetNextWindowRelativePosition(FVector2D RelativeScreenPosition, ImGui_WindowConditions Condition);
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Safe", meta = (DevelopmentOnly))
+	static void SetNextWindowScreenPosition(FVector2D ScreenPosition, ImGui_WindowConditions Condition = Always);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Safe", meta = (DevelopmentOnly))
 	static void SetNextWindowBackgroundAlpha(float BackgroundAlpha);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Safe", meta = (DevelopmentOnly))
 	static void SetNextWindowCollapseState(bool bCollapsed);  //Do-poprawy/przemyœlenia - brak Condition
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Safe", meta = (DevelopmentOnly))
 	static void SetNextWindowFocused();
+
+// Content region
+// Windows Scrolling
+// Parameters stacks (shared)
+// Parameters stacks (current window)
+// Style read access
+
+/* Cursor / Layout */
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Safe", meta = (DevelopmentOnly))
+	static void AddSeparator();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Safe", meta = (DevelopmentOnly))
+	static void StayInSameLine();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Safe", meta = (DevelopmentOnly))
+	static void AddSpacing();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	static void StartPrintingGroup();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	static void StopPrintingGroup();
+
+// ID stack/scopes
+
+/* Widgets / Text */
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Safe", meta = (DevelopmentOnly))
+	static void AddText(FString Text);
+
+/* Widgets / Main */
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	static UPARAM(DisplayName = "bClicked") bool AddButton(FString Name, FVector2D Size);
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	static UPARAM(DisplayName = "bClicked") bool AddCheckbox(FString Label, UPARAM(ref) bool& CheckedBool);
+
+// Widgets: Combo Box
+// Widgets: Drag Sliders
+// Widgets: Regular Sliders
+// Widgets: Input with Keyboard
+// Widgets: Color Editor/Picker (tip: the ColorEdit* functions have a little color square that can be left-clicked to open a picker, and right-clicked to open an option menu.)
+// Widgets: Trees
+// Widgets: Selectables
+// Widgets: List Boxes
+// Widgets: Data Plotting
+// Widgets: Value() Helpers.
+// Widgets: Menus
+// Tooltips
+// Popups: begin/end functions
+// Popups: open/close functions
+// Popups: open+begin combined functions helpers
+// Popups: query functions
+// Tables
+// Tables: Headers & Columns declaration
+// Tables: Sorting
+// Tables: Miscellaneous functions
+// Legacy Columns API (prefer using Tables!)
+// Tab Bars, Tabs
+// Logging/Capture
+// Drag and Drop
+// Disabling [BETA API]
+// Clipping
+// Focus, Activation
+// Item/Widgets Utilities and Query Functions
+// Viewports
+// Miscellaneous Utilities
+// Text Utilities
+// Color Utilities
+// Inputs Utilities: Keyboard
+// Inputs Utilities: Mouse
+// Clipboard Utilities
+// Settings/.Ini Utilities
+// Debug Utilities
+// Memory Allocators
 
 	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void AddCollapsingHeader(FString Name, bool& bOpen);
-
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
-	static void StartPrintingChild(FString Name, FVector2D SizeInPixels, bool bBorder, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties);
-
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
-	static void StopPrintingChild();
-
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
-	static void StartPrintingGroup();
-
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
-	static void StopPrintingGroup();
-
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
-	static void AddCheckbox(FString Label, bool bOldState, bool& bNewState, bool& bStateChanged);
 
 	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
 	static void AddRadioButtons(TSet<FString> Labels, int OldState, int& NewState, bool& bStateChanged);
@@ -219,5 +288,14 @@ private:
 
 	static ImGuiInputTextFlags GetFixedInputTextFlag(ImGui_InputTextType Flag);
 
-	static ImVec2 ScreenSizeToPixels(FVector2D ScreenSize = FVector2D(0, 0));
+	static ImVec2 GetScreenSizeInPixels(FVector2D ScreenSize = FVector2D(0, 0));
+
+	static ImVec2 GetRelativeScreenPosition(FVector2D ScreenSize = FVector2D(0, 0));
 };
+
+
+
+
+
+
+
