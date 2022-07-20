@@ -90,12 +90,15 @@ void UImGuiBPFL::StopPrintingMainWindow()
 
 /* Child Windows */
 
-void UImGuiBPFL::StartPrintingChild(FString Name, FVector2D SizeInPixels, bool bBorder, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties)
+bool UImGuiBPFL::StartPrintingChild(FString HashName, FVector2D Size, bool bBorder, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties)
 {
+	int HashId = GetTypeHash(HashName);
+	ImVec2 SizeInPixels = GetScreenSizeInPixels(Size);
 	ImGuiWindowFlags Flags = 0;
 	for (ImGui_WindowFlags SimpleFlag : Properties)
 		Flags += GetFixedWidnowFlag(SimpleFlag);
-	ImGui::BeginChild(GetTypeHash(Name), ImVec2(SizeInPixels.X, SizeInPixels.Y), bBorder, Flags);
+
+	return ImGui::BeginChild(HashId, SizeInPixels, bBorder, Flags);
 }
 
 void UImGuiBPFL::StopPrintingChild()
@@ -111,7 +114,7 @@ void UImGuiBPFL::SetNextWindowScreenPosition(FVector2D ScreenPosition, ImGui_Win
 {
 	FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
 
-	if (ViewportSize.X > 0 && ViewportSize.Y > 0)
+	if (ViewportSize.X > 0 && ViewportSize.Y > 0)	// don't call when viewport is just begin created
 	{
 		ImVec2 WindowPosition = GetScreenSizeInPixels(ScreenPosition);
 		ImVec2 WindowPivot = GetRelativeScreenPosition(ScreenPosition);
@@ -195,19 +198,164 @@ bool UImGuiBPFL::AddCheckbox(FString Label, bool& CheckedBool)
 	return ImGui::Checkbox(LabelConverted, &CheckedBool);
 }
 
+bool UImGuiBPFL::AddRadioButton(FString Label, bool bActive)
+{
+	char* LabelConverted = TCHAR_TO_ANSI(*Label);
+	return ImGui::RadioButton(LabelConverted, bActive);
+}
 
+bool UImGuiBPFL::AddRadioButtonList(TSet<FString> Labels, int& RadioedIntiger)
+{
+	bool bRadioedIntigerChanged = false;
+	int LabelIterator = 0;
 
-// Widgets: Combo Box
+	for (FString label : Labels)
+	{
+		char* labelConverted = TCHAR_TO_ANSI(*label);
+		if (ImGui::RadioButton(labelConverted, &RadioedIntiger, LabelIterator))
+			bRadioedIntigerChanged = true; // this must be changed it branch, otherwise other buttons will set bRadioedIntigerChanged back to false
+		LabelIterator++;
+	}
+
+	return bRadioedIntigerChanged;
+}
+
+void UImGuiBPFL::AddProgressBar(float Fraction, FVector2D Size, FString Overlay)
+{
+	char* OverlayConverted = Overlay.IsEmpty() ? nullptr : TCHAR_TO_ANSI(*Overlay);
+	ImVec2 SizeInPixels = GetScreenSizeInPixels(Size);
+
+	ImGui::ProgressBar(Fraction, SizeInPixels, OverlayConverted);
+}
+
+void UImGuiBPFL::AddBullet()
+{
+	ImGui::Bullet();
+}
+
+/* Widgets: Combo Box */
+
+bool UImGuiBPFL::StartPrintingCombo(FString Label, FString Preview)
+{
+	char* LabelConverted = TCHAR_TO_ANSI(*Label);
+	char* PreviewConverted = TCHAR_TO_ANSI(*Preview);
+
+	return ImGui::BeginCombo(LabelConverted, PreviewConverted);
+}
+
+void UImGuiBPFL::StopPrintingCombo()
+{
+	ImGui::EndCombo();
+}
+
 // Widgets: Drag Sliders
-// Widgets: Regular Sliders
-// Widgets: Input with Keyboard
+
+bool UImGuiBPFL::AddDragFloatArray(FString Label, UPARAM(ref) TArray<float>& DraggedArrayReference, float DragSpeed, float MinValue, float MaxValue)
+{
+	char* LabelConverted = TCHAR_TO_ANSI(*Label);
+	int ItemsAmount = DraggedArrayReference.Num();
+	float* PassByRefArray = new float[ItemsAmount];
+	for (int i = 0; i < ItemsAmount; i++)
+		PassByRefArray[i] = DraggedArrayReference[i];
+
+	
+	bool bChanged = ImGui::DragScalarN(LabelConverted, ImGuiDataType_Float, PassByRefArray, ItemsAmount, DragSpeed, &MinValue, &MaxValue);
+	for (int i = 0; i < ItemsAmount; i++)
+		DraggedArrayReference[i] = PassByRefArray[i];
+
+	delete[] PassByRefArray;
+	return bChanged;
+}
+
+bool UImGuiBPFL::AddDragIntArray(FString Label, UPARAM(ref) TArray<int>& DraggedArrayReference, float DragSpeed, int MinValue, int MaxValue)
+{
+
+	int ItemsAmount = DraggedArrayReference.Num();
+	char* LabelConverted = TCHAR_TO_ANSI(*Label);
+	int* PassByRefArray = new int[ItemsAmount];
+	for (int i = 0; i < ItemsAmount; i++)
+		PassByRefArray[i] = DraggedArrayReference[i];
+	
+	bool bChanged = ImGui::DragScalarN(LabelConverted, ImGuiDataType_S32, PassByRefArray, ItemsAmount, DragSpeed, &MinValue, &MaxValue);
+	for (int i = 0; i < ItemsAmount; i++)
+		DraggedArrayReference[i] = PassByRefArray[i];
+
+	delete[] PassByRefArray;
+	return bChanged;
+}
+
+/* Widgets / Regular Sliders */
+
+bool UImGuiBPFL::AddSliderFloatArray(FString Label, UPARAM(ref) TArray<float>& SlidedArrayReference, float MinValue, float MaxValue)
+{
+	char* LabelConverted = TCHAR_TO_ANSI(*Label);
+	int ItemsAmount = SlidedArrayReference.Num();
+	float* PassByRefArray = new float[ItemsAmount];
+	for (int i = 0; i < ItemsAmount; i++)
+		PassByRefArray[i] = SlidedArrayReference[i];
+
+
+	bool bChanged = ImGui::SliderScalarN(LabelConverted, ImGuiDataType_Float, PassByRefArray, ItemsAmount, &MinValue, &MaxValue);
+	for (int i = 0; i < ItemsAmount; i++)
+		SlidedArrayReference[i] = PassByRefArray[i];
+
+	delete[] PassByRefArray;
+	return bChanged;
+}
+
+bool UImGuiBPFL::AddSliderIntArray(FString Label, UPARAM(ref) TArray<int>& SlidedArrayReference, int MinValue, int MaxValue)
+{
+	int ItemsAmount = SlidedArrayReference.Num();
+	char* LabelConverted = TCHAR_TO_ANSI(*Label);
+	int* PassByRefArray = new int[ItemsAmount];
+	for (int i = 0; i < ItemsAmount; i++)
+		PassByRefArray[i] = SlidedArrayReference[i];
+
+	bool bChanged = ImGui::SliderScalarN(LabelConverted, ImGuiDataType_S32, PassByRefArray, ItemsAmount, &MinValue, &MaxValue);
+	for (int i = 0; i < ItemsAmount; i++)
+		SlidedArrayReference[i] = PassByRefArray[i];
+
+	delete[] PassByRefArray;
+	return bChanged;
+}
+
+/* Widgets: Input with Keyboard	*/
+
+bool UImGuiBPFL::AddInputTextBox(FString Label, FString Hint, FString& InputedString, int MaxCharactersCount, FVector2D BoxSize, TSet<TEnumAsByte<ImGui_InputTextType>> Properties)
+{
+	char* LabelConverted = TCHAR_TO_ANSI(*Label);
+	char* HintConverted = TCHAR_TO_ANSI(*Hint);
+	char* InputedStingConverted = TCHAR_TO_ANSI(*InputedString);
+	int MaxCharactersCountConverted = MaxCharactersCount == 0 ? sizeof(InputedStingConverted) : MaxCharactersCount;
+	ImVec2 BoxSizeConverted = GetScreenSizeInPixels(BoxSize);
+	ImGuiInputTextFlags Flags = 0;
+	for (ImGui_InputTextType SimpleFlag : Properties)
+		Flags += GetFixedInputTextFlag(SimpleFlag);
+
+	bool bCallback = ImGui::InputTextExSafe(LabelConverted, HintConverted, InputedStingConverted, MaxCharactersCountConverted, BoxSizeConverted, Flags);
+
+	InputedString = FString(ANSI_TO_TCHAR(InputedStingConverted));
+	return bCallback;
+}
+
 // Widgets: Color Editor/Picker (tip: the ColorEdit* functions have a little color square that can be left-clicked to open a picker, and right-clicked to open an option menu.)
 // Widgets: Trees
 // Widgets: Selectables
 // Widgets: List Boxes
 // Widgets: Data Plotting
 // Widgets: Value() Helpers.
-// Widgets: Menus
+/* Widgets / Menus */
+
+void UImGuiBPFL::StartAddingToMenuBar()
+{
+	ImGui::BeginMenuBar();
+}
+
+void UImGuiBPFL::StopAddingToMenuBar()
+{
+	ImGui::EndMenuBar();
+}
+
 // Tooltips
 // Popups: begin/end functions
 // Popups: open/close functions
@@ -244,50 +392,6 @@ void UImGuiBPFL::AddCollapsingHeader(FString Name, bool& bOpen)
 	bOpen = ImGui::CollapsingHeader(&*ConvertBuffer.begin());
 }
 
-void UImGuiBPFL::AddRadioButtons(TSet<FString> Labels, int OldState, int& NewState, bool& bStateChanged)
-{
-	bStateChanged = false;
-	int labelIterator = 0;
-	for (FString label : Labels)
-	{
-		std::string ConvertBuffer = TCHAR_TO_UTF8(*label);
-		if (ImGui::RadioButton(&*ConvertBuffer.begin(), &OldState, labelIterator))
-			bStateChanged = true;
-		labelIterator++;
-	}
-	NewState = OldState;
-}
-
-void UImGuiBPFL::AddBullet()
-{
-	ImGui::Bullet();
-}
-
-void UImGuiBPFL::AddProgressBar(FVector2D SizeInPixels, float Progress, FString Overlay)
-{
-	std::string ConvertBuffer = TCHAR_TO_UTF8(*Overlay);
-	ImGui::ProgressBar
-	(
-		Progress,
-		SizeInPixels.X == 0 && SizeInPixels.Y == 0 ? ImVec2(-FLT_MIN, 0) : ImVec2(SizeInPixels.X, SizeInPixels.Y),
-		Overlay == " " ? nullptr : &*ConvertBuffer.begin()
-	);
-}
-
-void UImGuiBPFL::StartPrintingCombo(FString Label, FString Preview, bool& bOpen)
-{
-	bOpen = false;
-	std::string ConvertBuffer_0 = TCHAR_TO_UTF8(*Label);
-	std::string ConvertBuffer_1 = TCHAR_TO_UTF8(*Preview);
-	if (ImGui::BeginCombo(&*ConvertBuffer_0.begin(), &*ConvertBuffer_1.begin()))
-		bOpen = true;
-}
-
-void UImGuiBPFL::StopPrintingCombo()
-{
-	ImGui::EndCombo();
-}
-
 void UImGuiBPFL::StartPrintingMenu(FString Label, bool bEnabled, bool& bOpen)
 {
 	bOpen = false;
@@ -299,16 +403,6 @@ void UImGuiBPFL::StartPrintingMenu(FString Label, bool bEnabled, bool& bOpen)
 void UImGuiBPFL::StopPrintingMenu()
 {
 	ImGui::EndMenu();
-}
-
-void UImGuiBPFL::StartAddingToMenuBar()
-{
-	ImGui::BeginMenuBar();
-}
-
-void UImGuiBPFL::StopAddingToMenuBar()
-{
-	ImGui::EndMenuBar();
 }
 
 void UImGuiBPFL::StartPrintingMainMenuBar()
@@ -327,73 +421,6 @@ void UImGuiBPFL::AddMainMenuItem(FString Label, FString Shortcut, bool bSelected
 	std::string ShortcutConvertBuffer = TCHAR_TO_UTF8(*Shortcut);
 	bClicked = 
 		ImGui::MenuItem(&*LabelConvertBuffer.begin(), &*LabelConvertBuffer.begin(), bSelected, bEnabled);
-}
-
-void UImGuiBPFL::AddDragFloatArray(FString Label, UPARAM(ref) TArray<float>& DraggedArrayReference, float DragSpeed, float MinValue, float MaxValue)
-{
-	float* PassByRefArray = new float[DraggedArrayReference.Num()];
-	for (int i = 0; i < DraggedArrayReference.Num(); i++)
-		PassByRefArray[i] = DraggedArrayReference[i];
-	std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
-	ImGui::DragScalarN(&*ConvertBuffer.begin(), ImGuiDataType_Float, PassByRefArray, DraggedArrayReference.Num(), DragSpeed, &MinValue, &MaxValue);
-	for (int i = 0; i < DraggedArrayReference.Num(); i++)
-		DraggedArrayReference[i] = PassByRefArray[i];
-	delete[] PassByRefArray;
-}
-
-void UImGuiBPFL::AddDragIntArray(FString Label, UPARAM(ref) TArray<int>& DraggedArrayReference, float DragSpeed, int MinValue, int MaxValue)
-{
-	int* PassByRefArray = new int[DraggedArrayReference.Num()];
-	for (int i = 0; i < DraggedArrayReference.Num(); i++)
-		PassByRefArray[i] = DraggedArrayReference[i];
-	std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
-	ImGui::DragScalarN(&*ConvertBuffer.begin(), ImGuiDataType_S32, PassByRefArray, DraggedArrayReference.Num(), DragSpeed, &MinValue, &MaxValue);
-	for (int i = 0; i < DraggedArrayReference.Num(); i++)
-		DraggedArrayReference[i] = PassByRefArray[i];
-	delete[] PassByRefArray;
-}
-
-void UImGuiBPFL::AddSliderFloatArray(FString Label, UPARAM(ref) TArray<float>& DraggedArrayReference, float MinValue, float MaxValue)
-{
-	float* PassByRefArray = new float[DraggedArrayReference.Num()];
-	for (int i = 0; i < DraggedArrayReference.Num(); i++)
-		PassByRefArray[i] = DraggedArrayReference[i];
-	std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
-	ImGui::SliderScalarN(&*ConvertBuffer.begin(), ImGuiDataType_Float, PassByRefArray, DraggedArrayReference.Num(), &MinValue, &MaxValue);
-	for (int i = 0; i < DraggedArrayReference.Num(); i++)
-		DraggedArrayReference[i] = PassByRefArray[i];
-	delete[] PassByRefArray;
-}
-
-void UImGuiBPFL::AddSliderIntArray(FString Label, UPARAM(ref) TArray<int>& DraggedArrayReference, int MinValue, int MaxValue)
-{
-	int* PassByRefArray = new int[DraggedArrayReference.Num()];
-	for (int i = 0; i < DraggedArrayReference.Num(); i++)
-		PassByRefArray[i] = DraggedArrayReference[i];
-	std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
-	ImGui::SliderScalarN(&*ConvertBuffer.begin(), ImGuiDataType_S32, PassByRefArray, DraggedArrayReference.Num(), &MinValue, &MaxValue);
-	for (int i = 0; i < DraggedArrayReference.Num(); i++)
-		DraggedArrayReference[i] = PassByRefArray[i];
-	delete[] PassByRefArray;
-}
-
-void UImGuiBPFL::AddInputTextBox(FString Label, FString Hint, UPARAM(ref) FString& InputedString, int MaxCharactersCount, FVector2D BoxSize, TSet<TEnumAsByte<ImGui_InputTextType>> Properties, bool& bCallback)
-{
-	char* LabelConverted = TCHAR_TO_ANSI(*Label);
-	char* HintConverted = TCHAR_TO_ANSI(*Hint);
-	char* InputedFStingConverted = TCHAR_TO_ANSI(*InputedString);
-
-	int MaxCharactersCountConverted = MaxCharactersCount == 0 ? sizeof(InputedFStingConverted) : MaxCharactersCount;
-	ImVec2 BoxSizeConverted = GetScreenSizeInPixels(BoxSize);
-
-	ImGuiInputTextFlags Flags = 0;
-	for (ImGui_InputTextType SimpleFlag : Properties)
-		Flags += GetFixedInputTextFlag(SimpleFlag);
-
-	bCallback =
-		ImGui::InputTextExSafe(LabelConverted, HintConverted, InputedFStingConverted, MaxCharactersCountConverted, BoxSizeConverted, Flags);
-
-	InputedString = FString(ANSI_TO_TCHAR(InputedFStingConverted));
 }
 
 //TEST Func
