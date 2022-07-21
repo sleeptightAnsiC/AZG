@@ -98,15 +98,15 @@ class IMGUI_API UImGuiBPFL : public UBlueprintFunctionLibrary
 
 public:
 
-	//placeholders / test
+	//! Placeholders ! / test
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Placeholders", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Placeholders !", meta = (DevelopmentOnly))
 	static void PrintSimpleWindow(FString Name, FString Text, FVector2D ScreenPosition);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Placeholders", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Placeholders !", meta = (DevelopmentOnly))
 	static void PrintSimpleWatermark(FString Name, FString Text, FVector2D ScreenPosition, bool bPrintTextOnly, float BackgroundAlpha);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Placeholders", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Placeholders !", meta = (DevelopmentOnly))
 	static void TestFunction();
 
 
@@ -121,34 +121,34 @@ public:
 
 /* Windows */
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Windows", meta = (DevelopmentOnly))
 	static void StartPrintingMainWindow(FString Name, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Windows", meta = (DevelopmentOnly))
 	static void StopPrintingMainWindow();
 
 /* Child Windows */
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Child Windows", meta = (DevelopmentOnly))
 	static UPARAM(DisplayName = "bVisible") bool StartPrintingChild(FString HashName, FVector2D Size, bool bBorder, TSet<TEnumAsByte<ImGui_WindowFlags>> Properties);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Child Windows", meta = (DevelopmentOnly))
 	static void StopPrintingChild();
 
 // Windows Utilities
 
 /* Window manipulation */
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Safe", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Window manipulation", meta = (DevelopmentOnly))
 	static void SetNextWindowScreenPosition(FVector2D ScreenPosition, ImGui_WindowConditions Condition = Always);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Safe", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Window manipulation", meta = (DevelopmentOnly))
 	static void SetNextWindowBackgroundAlpha(float BackgroundAlpha);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Safe", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Window manipulation", meta = (DevelopmentOnly))
 	static void SetNextWindowCollapseState(bool bCollapsed);  //Do-poprawy/przemyœlenia - brak Condition
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Safe", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Window manipulation", meta = (DevelopmentOnly))
 	static void SetNextWindowFocused();
 
 // Content region
@@ -159,80 +159,84 @@ public:
 
 /* Cursor / Layout */
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Safe", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Cursor|Layout", meta = (DevelopmentOnly))
 	static void AddSeparator();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Safe", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Cursor|Layout", meta = (DevelopmentOnly))
 	static void StayInSameLine();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Safe", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Cursor|Layout", meta = (DevelopmentOnly))
 	static void AddSpacing();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Cursor|Layout", meta = (DevelopmentOnly))
 	static void StartPrintingGroup();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Cursor|Layout|", meta = (DevelopmentOnly))
 	static void StopPrintingGroup();
 
 // ID stack/scopes
 
 /* Widgets / Text */
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Safe", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Widgets|Text", meta = (DevelopmentOnly))
 	static void AddText(FString Text);
 
 /* Widgets / Main */
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Main", meta = (DevelopmentOnly))
 	static UPARAM(DisplayName = "bClicked") bool AddButton(FString Name, FVector2D Size);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Main", meta = (DevelopmentOnly))
 	static UPARAM(DisplayName = "bChanged") bool AddCheckbox(FString Label, UPARAM(ref) bool& CheckedBool);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Main", meta = (DevelopmentOnly))
 	static UPARAM(DisplayName = "bClicked") bool AddRadioButton(FString Label, bool bActive);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Main", meta = (DevelopmentOnly))
 	static UPARAM(DisplayName = "bClicked") bool AddRadioButtonList(TSet<FString> Labels, UPARAM(ref) int& RadioedIntiger);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Safe", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Widgets|Main", meta = (DevelopmentOnly))
 	static void AddProgressBar(float Fraction, FVector2D Size, FString Overlay);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Safe", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Widgets|Main", meta = (DevelopmentOnly))
 	static void AddBullet();
 
 /* Widgets / Combo Box */
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Combo Box", meta = (DevelopmentOnly))
 	static UPARAM(DisplayName = "bOpen") bool StartPrintingCombo(FString Label, FString Preview);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Combo Box", meta = (DevelopmentOnly))
 	static void StopPrintingCombo();
 
 /* Widgets / Drag Sliders */  
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Drag Sliders", meta = (DevelopmentOnly))
 	static UPARAM(DisplayName = "bChanged") bool AddDragFloatArray(FString Label, UPARAM(ref) TArray<float>& DraggedArrayReference, float DragSpeed = 1.0f, float MinValue = 0.0f, float MaxValue = 0.0f);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Drag Sliders", meta = (DevelopmentOnly))
 	static UPARAM(DisplayName = "bChanged") bool AddDragIntArray(FString Label, UPARAM(ref) TArray<int>& DraggedArrayReference, float DragSpeed = 1.0f, int MinValue = 0, int MaxValue = 0);
 
 /* Widgets / Regular Sliders */
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Regular Sliders", meta = (DevelopmentOnly))
 	static UPARAM(DisplayName = "bChanged") bool AddSliderFloatArray(FString Label, UPARAM(ref) TArray<float>& SlidedArrayReference, float MinValue = 0.0f, float MaxValue = 100.0f);
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Regular Sliders", meta = (DevelopmentOnly))
 	static UPARAM(DisplayName = "bChanged") bool AddSliderIntArray(FString Label, UPARAM(ref) TArray<int>& SlidedArrayReference, int MinValue = 0, int MaxValue = 100);
 
 
-/* Widgets: Input with Keyboard	*/
+/* Widgets / Input with Keyboard */
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Input with Keyboard", meta = (DevelopmentOnly))
 	static UPARAM(DisplayName = "bCallback") bool AddInputTextBox(FString Label, FString Hint, UPARAM(ref) FString& InputedString, int MaxCharactersCount, FVector2D BoxSize, TSet<TEnumAsByte<ImGui_InputTextType>> Properties);
 
 // Widgets: Color Editor/Picker (tip: the ColorEdit* functions have a little color square that can be left-clicked to open a picker, and right-clicked to open an option menu.)
-// Widgets: Trees
+/* Widgets / Trees */
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Trees", meta = (DevelopmentOnly))
+	static UPARAM(DisplayName = "bOpen") bool AddCollapsingHeader(FString Label);
+
 // Widgets: Selectables
 // Widgets: List Boxes
 // Widgets: Data Plotting
@@ -240,11 +244,26 @@ public:
 
 /* Widgets / Menus */
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
-	static void StartAddingToMenuBar();
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Menus", meta = (DevelopmentOnly))
+	static UPARAM(DisplayName = "bOpen") bool StartAddingToMenuBar();
 
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions|Raw", meta = (DevelopmentOnly))
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Menus", meta = (DevelopmentOnly))
 	static void StopAddingToMenuBar();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Menus", meta = (DevelopmentOnly))
+	static UPARAM(DisplayName = "bOpen") bool StartPrintingMainMenuBar();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Menus", meta = (DevelopmentOnly))
+	static void StopPrintingMainMenuBar();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Menus", meta = (DevelopmentOnly))
+	static UPARAM(DisplayName = "bOpen") bool StartPrintingMenu(FString Label, bool bEnabled);
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Menus", meta = (DevelopmentOnly))
+	static void StopPrintingMenu();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Menus", meta = (DevelopmentOnly))
+	static UPARAM(DisplayName = "bActivated") bool AddMenuItem(FString Label, FString Shortcut, UPARAM(ref) bool& bSelected, bool bEnabled);
 
 // Tooltips
 // Popups: begin/end functions
@@ -273,24 +292,6 @@ public:
 // Settings/.Ini Utilities
 // Debug Utilities
 // Memory Allocators
-
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
-	static void AddCollapsingHeader(FString Name, bool& bOpen);
-
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
-	static void StartPrintingMenu(FString Label, bool bEnabled, bool& bOpen);
-
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
-	static void StopPrintingMenu();
-
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
-	static void StartPrintingMainMenuBar();
-
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
-	static void StopPrintingMainMenuBar();
-
-	UFUNCTION(BlueprintCallable, Category = "DearImGui|C++ Functions", meta = (DevelopmentOnly))
-	static void AddMainMenuItem(FString Label, FString Shortcut, bool bSelected, bool bEnabled, bool& bClicked);
 
 private:
 

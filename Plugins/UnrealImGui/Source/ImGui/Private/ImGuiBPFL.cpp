@@ -3,36 +3,26 @@
 
 #include "ImGuiBPFL.h"
 #include <imgui.h>
-//#include <imgui_internal.h>
-#include <string>
 
 
 //Public
 // placeholders - test
 
 void UImGuiBPFL::PrintSimpleWindow(FString Name, FString Text, FVector2D ScreenPosition)
-{
-	std::string ConvertBuffer = TCHAR_TO_UTF8(*Name);
+{;
+	char* NameConverted = TCHAR_TO_ANSI(*Name);
+	char* TextConverted = TCHAR_TO_ANSI(*Text);
+
 	UImGuiBPFL::SetNextWindowScreenPosition(ScreenPosition, Once);
-	ImGui::Begin(&*ConvertBuffer.begin(), nullptr,
-		//ImGuiWindowFlags_AlwaysAutoResize +
-		//ImGuiWindowFlags_NoBackground +
-		//ImGuiWindowFlags_NoCollapse +
-		//ImGuiWindowFlags_NoResize +
-		//ImGuiWindowFlags_NoInputs +
-		ImGuiWindowFlags_NoSavedSettings +
-		ImGuiWindowFlags_AlwaysAutoResize +
-		//ImGuiWindowFlags_NoMove +
-		ImGuiWindowFlags_None
-	);
-	ConvertBuffer = TCHAR_TO_UTF8(*Text);
-	ImGui::Text(&*ConvertBuffer.begin());
-	
+	ImGui::Begin(NameConverted, nullptr, ImGuiWindowFlags_NoSavedSettings + ImGuiWindowFlags_AlwaysAutoResize + ImGuiWindowFlags_None);
+	ImGui::Text(TextConverted);
 	ImGui::End();
 }
 
 void UImGuiBPFL::PrintSimpleWatermark(FString Name, FString Text, FVector2D ScreenPosition, bool bPrintTextOnly, float BackgroundAlpha)
 {	
+	char* NameConverted = TCHAR_TO_ANSI(*Name);
+	char* TextConverted = TCHAR_TO_ANSI(*Text);
 	auto flags =
 			ImGuiWindowFlags_AlwaysAutoResize +
 			ImGuiWindowFlags_NoCollapse +
@@ -41,22 +31,14 @@ void UImGuiBPFL::PrintSimpleWatermark(FString Name, FString Text, FVector2D Scre
 			ImGuiWindowFlags_NoNav +
 			ImGuiWindowFlags_NoMove +
 			ImGuiWindowFlags_None;
-		if (bPrintTextOnly)
-			flags += ImGuiWindowFlags_NoTitleBar;
+	if (bPrintTextOnly)
+		flags += ImGuiWindowFlags_NoTitleBar;
 
-		UImGuiBPFL::SetNextWindowScreenPosition(ScreenPosition, Always);
-		ImGui::SetNextWindowBgAlpha(BackgroundAlpha);
-
-		std::string ConvertBuffer
-			= TCHAR_TO_UTF8(*Name);
-		ImGui::Begin(&*ConvertBuffer.begin(), nullptr, flags);
-
-		//ImGui::SetWindowFocus(&*ConvertBuffer.begin());	 //Always-On-Top Placeholder
-
-		ConvertBuffer = TCHAR_TO_UTF8(*Text);
-		ImGui::Text(&*ConvertBuffer.begin());
-
-		ImGui::End();
+	UImGuiBPFL::SetNextWindowScreenPosition(ScreenPosition, Always);
+	ImGui::SetNextWindowBgAlpha(BackgroundAlpha);	
+	ImGui::Begin(NameConverted, nullptr, flags);
+	ImGui::Text(TextConverted);
+	ImGui::End();
 }
 
 
@@ -339,21 +321,56 @@ bool UImGuiBPFL::AddInputTextBox(FString Label, FString Hint, FString& InputedSt
 }
 
 // Widgets: Color Editor/Picker (tip: the ColorEdit* functions have a little color square that can be left-clicked to open a picker, and right-clicked to open an option menu.)
-// Widgets: Trees
+/* Widgets / Trees */
+
+bool UImGuiBPFL::AddCollapsingHeader(FString Label)
+{
+	char* LabelConverted = TCHAR_TO_ANSI(*Label);
+	return ImGui::CollapsingHeader(LabelConverted);
+}
+
 // Widgets: Selectables
 // Widgets: List Boxes
 // Widgets: Data Plotting
 // Widgets: Value() Helpers.
 /* Widgets / Menus */
 
-void UImGuiBPFL::StartAddingToMenuBar()
+bool UImGuiBPFL::StartAddingToMenuBar()
 {
-	ImGui::BeginMenuBar();
+	return ImGui::BeginMenuBar();
 }
 
 void UImGuiBPFL::StopAddingToMenuBar()
 {
 	ImGui::EndMenuBar();
+}
+
+bool UImGuiBPFL::StartPrintingMainMenuBar()
+{
+	return ImGui::BeginMainMenuBar();
+}
+
+void UImGuiBPFL::StopPrintingMainMenuBar()
+{
+	ImGui::EndMainMenuBar();
+}
+
+bool UImGuiBPFL::StartPrintingMenu(FString Label, bool bEnabled)
+{
+	char* LabelConverted = TCHAR_TO_ANSI(*Label);
+	return ImGui::BeginMenu(LabelConverted, bEnabled);
+}
+
+void UImGuiBPFL::StopPrintingMenu()
+{
+	ImGui::EndMenu();
+}
+
+bool UImGuiBPFL::AddMenuItem(FString Label, FString Shortcut, bool& bSelected, bool bEnabled)
+{
+	char* LabelConverted = TCHAR_TO_ANSI(*Label);
+	char* ShortcutConverted = TCHAR_TO_ANSI(*Shortcut);
+	return ImGui::MenuItem(LabelConverted, ShortcutConverted, &bSelected, bEnabled);
 }
 
 // Tooltips
@@ -384,44 +401,6 @@ void UImGuiBPFL::StopAddingToMenuBar()
 // Debug Utilities
 // Memory Allocators
 
-
-void UImGuiBPFL::AddCollapsingHeader(FString Name, bool& bOpen)
-{
-	bOpen = false;
-	std::string ConvertBuffer = TCHAR_TO_UTF8(*Name);
-	bOpen = ImGui::CollapsingHeader(&*ConvertBuffer.begin());
-}
-
-void UImGuiBPFL::StartPrintingMenu(FString Label, bool bEnabled, bool& bOpen)
-{
-	bOpen = false;
-	std::string ConvertBuffer = TCHAR_TO_UTF8(*Label);
-	bOpen =
-		ImGui::BeginMenu(&*ConvertBuffer.begin(), bEnabled);
-}
-
-void UImGuiBPFL::StopPrintingMenu()
-{
-	ImGui::EndMenu();
-}
-
-void UImGuiBPFL::StartPrintingMainMenuBar()
-{
-	ImGui::BeginMainMenuBar();
-}
-
-void UImGuiBPFL::StopPrintingMainMenuBar()
-{
-	ImGui::EndMainMenuBar();	
-}
-
-void UImGuiBPFL::AddMainMenuItem(FString Label, FString Shortcut, bool bSelected, bool bEnabled, bool& bClicked)
-{
-	std::string LabelConvertBuffer = TCHAR_TO_UTF8(*Label);
-	std::string ShortcutConvertBuffer = TCHAR_TO_UTF8(*Shortcut);
-	bClicked = 
-		ImGui::MenuItem(&*LabelConvertBuffer.begin(), &*LabelConvertBuffer.begin(), bSelected, bEnabled);
-}
 
 //TEST Func
 
@@ -543,8 +522,6 @@ ImVec2 UImGuiBPFL::GetScreenSizeInPixels(FVector2D ScreenSize)
 	FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
 	ImVec2 Pixels;
 
-	GEngine->AddOnScreenDebugMessage((int32)(GetTypeHash(ViewportSize.ToString())), 0, FColor::Red, ViewportSize.ToString());
-
 	if (ScreenSize.X < 0 || ScreenSize.X > ViewportSize.X)
 		Pixels.x = 0;
 	else
@@ -554,7 +531,6 @@ ImVec2 UImGuiBPFL::GetScreenSizeInPixels(FVector2D ScreenSize)
 		else
 			Pixels.x = (float)(ScreenSize.X);
 	}
-
 	if (ScreenSize.Y < 0 || ScreenSize.Y > ViewportSize.Y)
 		Pixels.y = 0;
 	else
@@ -565,9 +541,6 @@ ImVec2 UImGuiBPFL::GetScreenSizeInPixels(FVector2D ScreenSize)
 			Pixels.y = (float)(ScreenSize.Y);
 	}
 
-	FVector2D test = { Pixels.x, Pixels.y };
-	GEngine->AddOnScreenDebugMessage((int32)(GetTypeHash(test.ToString())), 0, FColor::Red, test.ToString());
-
 	return Pixels;
 }
 
@@ -575,8 +548,6 @@ ImVec2 UImGuiBPFL::GetRelativeScreenPosition(FVector2D ScreenSize)
 {
 	FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
 	ImVec2 RelativePosition;
-
-	GEngine->AddOnScreenDebugMessage((int32)(GetTypeHash(ViewportSize.ToString())), 0, FColor::Red, ViewportSize.ToString());
 
 	if (ScreenSize.X < 0 || ScreenSize.X > ViewportSize.X)
 		RelativePosition.x = 0;
@@ -587,7 +558,6 @@ ImVec2 UImGuiBPFL::GetRelativeScreenPosition(FVector2D ScreenSize)
 		else
 			RelativePosition.x = (float)(ScreenSize.X / ViewportSize.X);
 	}
-
 	if (ScreenSize.Y < 0 || ScreenSize.Y > ViewportSize.Y)
 		RelativePosition.y = 0;
 	else
@@ -597,9 +567,6 @@ ImVec2 UImGuiBPFL::GetRelativeScreenPosition(FVector2D ScreenSize)
 		else
 			RelativePosition.y = (float)(ScreenSize.Y / ViewportSize.Y);
 	}
-
-	FVector2D test = { RelativePosition.x, RelativePosition.y };
-	GEngine->AddOnScreenDebugMessage((int32)(GetTypeHash(test.ToString())), 0, FColor::Red, test.ToString());
 
 	return RelativePosition;
 }
