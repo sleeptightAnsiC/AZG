@@ -135,7 +135,22 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Child Windows", meta = (DevelopmentOnly))
 	static void StopPrintingChild();
 
-// Windows Utilities
+/* Windows Utilities */
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Windows Utilities", meta = (DevelopmentOnly))
+	static UPARAM(DisplayName = "bCollapsed") bool IsWindowCollapsed();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Windows Utilities", meta = (DevelopmentOnly))
+	static UPARAM(DisplayName = "bFocused") bool IsWindowFocused();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Windows Utilities", meta = (DevelopmentOnly))
+	static UPARAM(DisplayName = "bHovered") bool IsWindowHovered();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Windows Utilities", meta = (DevelopmentOnly))
+	static UPARAM(DisplayName = "Position") FVector2D GetWindowPosition(bool bRelative = false);
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Windows Utilities", meta = (DevelopmentOnly))
+	static UPARAM(DisplayName = "Size") FVector2D GetWindowSize(bool bRelative = false);
 
 /* Window manipulation */
 
@@ -143,13 +158,25 @@ public:
 	static void SetNextWindowScreenPosition(FVector2D ScreenPosition, ImGui_WindowConditions Condition = Always);
 
 	UFUNCTION(BlueprintCallable, Category = "DearImGui|Window manipulation", meta = (DevelopmentOnly))
-	static void SetNextWindowBackgroundAlpha(float BackgroundAlpha);
+	static void SetNextWindowSize(FVector2D Size, ImGui_WindowConditions Condition = Always);
 
 	UFUNCTION(BlueprintCallable, Category = "DearImGui|Window manipulation", meta = (DevelopmentOnly))
-	static void SetNextWindowCollapseState(bool bCollapsed);  //Do-poprawy/przemyœlenia - brak Condition
+	static void SetNextWindowSizeConstraints(FVector2D SizeMin, FVector2D SizeMax);
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Window manipulation", meta = (DevelopmentOnly))
+	static void SetNextWindowContentSize(FVector2D Size);
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Window manipulation", meta = (DevelopmentOnly))
+	static void SetNextWindowCollapsed(bool bCollapsed, ImGui_WindowConditions Condition = Always);  //Do-poprawy/przemyœlenia - brak Condition
 
 	UFUNCTION(BlueprintCallable, Category = "DearImGui|Window manipulation", meta = (DevelopmentOnly))
 	static void SetNextWindowFocused();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Window manipulation", meta = (DevelopmentOnly))
+	static void SetNextWindowBackgroundAlpha(float BackgroundAlpha);
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|Window manipulation", meta = (DevelopmentOnly))
+	static void SetWindowFontScale(float Scale = 1);
 
 // Content region
 // Windows Scrolling
@@ -265,7 +292,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Widgets|Menus", meta = (DevelopmentOnly))
 	static UPARAM(DisplayName = "bActivated") bool AddMenuItem(FString Label, FString Shortcut, UPARAM(ref) bool& bSelected, bool bEnabled);
 
-// Tooltips
+/* Tooltips	*/
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Tooltips", meta = (DevelopmentOnly))
+	static void StartPrintingTooltip();
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Tooltips", meta = (DevelopmentOnly))
+	static void StopPrintingTooltip();
+
 // Popups: begin/end functions
 // Popups: open/close functions
 // Popups: open+begin combined functions helpers
@@ -278,7 +312,14 @@ public:
 // Tab Bars, Tabs
 // Logging/Capture
 // Drag and Drop
-// Disabling [BETA API]
+/* Disabling [BETA API] */
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Disabling", meta = (DevelopmentOnly))
+	static void StartPrintingDisabled(bool bDisabled = true);
+
+	UFUNCTION(BlueprintCallable, Category = "DearImGui|! Raw C++ Functions !|Disabling", meta = (DevelopmentOnly))
+	static void StopPrintingDisabled();
+
 // Clipping
 // Focus, Activation
 // Item/Widgets Utilities and Query Functions

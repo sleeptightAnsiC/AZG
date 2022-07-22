@@ -14,7 +14,7 @@ void UImGuiBPFL::PrintSimpleWindow(FString Name, FString Text, FVector2D ScreenP
 	char* TextConverted = TCHAR_TO_ANSI(*Text);
 
 	UImGuiBPFL::SetNextWindowScreenPosition(ScreenPosition, Once);
-	ImGui::Begin(NameConverted, nullptr, ImGuiWindowFlags_NoSavedSettings + ImGuiWindowFlags_AlwaysAutoResize + ImGuiWindowFlags_None);
+	ImGui::Begin(NameConverted, nullptr, ImGuiWindowFlags_AlwaysAutoResize + ImGuiWindowFlags_None);
 	ImGui::Text(TextConverted);
 	ImGui::End();
 }
@@ -88,21 +88,92 @@ void UImGuiBPFL::StopPrintingChild()
 	ImGui::EndChild();
 }
 
-// Windows Utilities
+/* Windows Utilities */
+
+bool UImGuiBPFL::IsWindowCollapsed()
+{
+	return ImGui::IsWindowCollapsed();
+}
+
+bool UImGuiBPFL::IsWindowFocused()
+{
+	return ImGui::IsWindowFocused((ImGuiFocusedFlags)0);
+}
+
+FVector2D UImGuiBPFL::GetWindowPosition(bool bRelative)
+{
+	FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
+	ImVec2 WindowPositionRaw;
+	FVector2D  WindowPositionFixed;
+
+	WindowPositionRaw = ImGui::GetWindowPos();
+	WindowPositionFixed.X = bRelative ? WindowPositionRaw.x / ViewportSize.X : WindowPositionRaw.x;
+	WindowPositionFixed.Y = bRelative ? WindowPositionRaw.y / ViewportSize.Y : WindowPositionRaw.y;
+
+	return  WindowPositionFixed;
+}
+
+FVector2D UImGuiBPFL::GetWindowSize(bool bRelative)
+{
+	FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
+	ImVec2 WindowSizeRaw;
+	FVector2D  WindowSizeFixed;
+
+	WindowSizeRaw = ImGui::GetWindowSize();
+	WindowSizeFixed.X = bRelative ? WindowSizeRaw.x / ViewportSize.X : WindowSizeRaw.x;
+	WindowSizeFixed.Y = bRelative ? WindowSizeRaw.y / ViewportSize.Y : WindowSizeRaw.y;
+
+	return  WindowSizeFixed;
+}
 
 /* Window manipulation */
 
 void UImGuiBPFL::SetNextWindowScreenPosition(FVector2D ScreenPosition, ImGui_WindowConditions Condition)
 {
 	FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
+	ImVec2 WindowPosition = GetScreenSizeInPixels(ScreenPosition);
+	ImVec2 WindowPivot = GetRelativeScreenPosition(ScreenPosition);
 
 	if (ViewportSize.X > 0 && ViewportSize.Y > 0)	// don't call when viewport is just begin created
-	{
-		ImVec2 WindowPosition = GetScreenSizeInPixels(ScreenPosition);
-		ImVec2 WindowPivot = GetRelativeScreenPosition(ScreenPosition);
-
 		ImGui::SetNextWindowPos(WindowPosition, Condition, WindowPivot);
-	}
+}
+
+void UImGuiBPFL::SetNextWindowSize(FVector2D Size, ImGui_WindowConditions Condition)
+{
+	FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
+	ImVec2 SizeConverted = GetScreenSizeInPixels(Size);
+
+	if (ViewportSize.X > 0 && ViewportSize.Y > 0)	 // don't call when viewport is just begin created
+		ImGui::SetNextWindowSize(SizeConverted, Condition);
+}
+
+void UImGuiBPFL::SetNextWindowSizeConstraints(FVector2D SizeMin, FVector2D SizeMax)
+{
+	FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
+	ImVec2 SizeMinConverted = GetScreenSizeInPixels(SizeMin);
+	ImVec2 SizeMaxConverted = GetScreenSizeInPixels(SizeMax);
+
+	if (ViewportSize.X > 0 && ViewportSize.Y > 0)	 // don't call when viewport is just begin created
+		ImGui::SetNextWindowSizeConstraints(SizeMinConverted, SizeMaxConverted);
+}
+
+void UImGuiBPFL::SetNextWindowContentSize(FVector2D Size)
+{
+	FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
+	ImVec2 SizeConverted = GetScreenSizeInPixels(Size);;
+
+	if (ViewportSize.X > 0 && ViewportSize.Y > 0)	 // don't call when viewport is just begin created
+		ImGui::SetNextWindowContentSize(SizeConverted);
+}
+
+void UImGuiBPFL::SetNextWindowCollapsed(bool bCollapsed, ImGui_WindowConditions Condition)
+{
+	ImGui::SetNextWindowCollapsed(bCollapsed, Condition);
+}
+
+void UImGuiBPFL::SetNextWindowFocused()
+{
+	ImGui::SetNextWindowFocus();
 }
 
 void UImGuiBPFL::SetNextWindowBackgroundAlpha(float BackgroundAlpha)
@@ -110,14 +181,9 @@ void UImGuiBPFL::SetNextWindowBackgroundAlpha(float BackgroundAlpha)
 	ImGui::SetNextWindowBgAlpha(BackgroundAlpha);
 }
 
-void UImGuiBPFL::SetNextWindowCollapseState(bool bCollapsed) //Do-poprawy/przemyœlenia - brak Condition
+void UImGuiBPFL::SetWindowFontScale(float Scale)
 {
-	ImGui::SetNextWindowCollapsed(bCollapsed, ImGuiCond_Always);
-}
-
-void UImGuiBPFL::SetNextWindowFocused()
-{
-	ImGui::SetNextWindowFocus();
+	ImGui::SetWindowFontScale(Scale);
 }
 
 // Content region
@@ -373,7 +439,18 @@ bool UImGuiBPFL::AddMenuItem(FString Label, FString Shortcut, bool& bSelected, b
 	return ImGui::MenuItem(LabelConverted, ShortcutConverted, &bSelected, bEnabled);
 }
 
-// Tooltips
+/* Tooltips */
+
+void UImGuiBPFL::StartPrintingTooltip()
+{
+	ImGui::BeginTooltip();
+}
+
+void UImGuiBPFL::StopPrintingTooltip()
+{
+	ImGui::EndTooltip();
+}
+
 // Popups: begin/end functions
 // Popups: open/close functions
 // Popups: open+begin combined functions helpers
@@ -386,7 +463,18 @@ bool UImGuiBPFL::AddMenuItem(FString Label, FString Shortcut, bool& bSelected, b
 // Tab Bars, Tabs
 // Logging/Capture
 // Drag and Drop
-// Disabling [BETA API]
+/* Disabling [BETA API] */
+
+void UImGuiBPFL::StartPrintingDisabled(bool bDisabled)
+{
+	ImGui::BeginDisabled(bDisabled);
+}
+
+void UImGuiBPFL::StopPrintingDisabled()
+{
+	ImGui::EndDisabled();
+}
+
 // Clipping
 // Focus, Activation
 // Item/Widgets Utilities and Query Functions
@@ -522,24 +610,8 @@ ImVec2 UImGuiBPFL::GetScreenSizeInPixels(FVector2D ScreenSize)
 	FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
 	ImVec2 Pixels;
 
-	if (ScreenSize.X < 0 || ScreenSize.X > ViewportSize.X)
-		Pixels.x = 0;
-	else
-	{
-		if (ScreenSize.X <= 1)
-			Pixels.x = (float)(ScreenSize.X * ViewportSize.X);
-		else
-			Pixels.x = (float)(ScreenSize.X);
-	}
-	if (ScreenSize.Y < 0 || ScreenSize.Y > ViewportSize.Y)
-		Pixels.y = 0;
-	else
-	{
-		if (ScreenSize.Y <= 1)
-			Pixels.y = (float)(ScreenSize.Y * ViewportSize.Y);
-		else
-			Pixels.y = (float)(ScreenSize.Y);
-	}
+	Pixels.x = ScreenSize.X < 0 || ScreenSize.X > ViewportSize.X ? 0 : ScreenSize.X <= 1 ? ScreenSize.X * ViewportSize.X : ScreenSize.X;
+	Pixels.y = ScreenSize.Y < 0 || ScreenSize.Y > ViewportSize.Y ? 0 : ScreenSize.Y <= 1 ? ScreenSize.Y * ViewportSize.Y : ScreenSize.Y;
 
 	return Pixels;
 }
@@ -549,24 +621,8 @@ ImVec2 UImGuiBPFL::GetRelativeScreenPosition(FVector2D ScreenSize)
 	FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
 	ImVec2 RelativePosition;
 
-	if (ScreenSize.X < 0 || ScreenSize.X > ViewportSize.X)
-		RelativePosition.x = 0;
-	else
-	{
-		if (ScreenSize.X <= 1)
-			RelativePosition.x = (float)(ScreenSize.X);
-		else
-			RelativePosition.x = (float)(ScreenSize.X / ViewportSize.X);
-	}
-	if (ScreenSize.Y < 0 || ScreenSize.Y > ViewportSize.Y)
-		RelativePosition.y = 0;
-	else
-	{
-		if (ScreenSize.Y <= 1)
-			RelativePosition.y = (float)(ScreenSize.Y);
-		else
-			RelativePosition.y = (float)(ScreenSize.Y / ViewportSize.Y);
-	}
+	RelativePosition.x = ScreenSize.X < 0 || ScreenSize.X > ViewportSize.X ? 0 : ScreenSize.X <= 1 ? ScreenSize.X : ScreenSize.X / ViewportSize.X;
+	RelativePosition.y = ScreenSize.Y < 0 || ScreenSize.Y > ViewportSize.Y ? 0 : ScreenSize.Y <= 1 ? ScreenSize.Y : ScreenSize.Y / ViewportSize.Y;
 
 	return RelativePosition;
 }
